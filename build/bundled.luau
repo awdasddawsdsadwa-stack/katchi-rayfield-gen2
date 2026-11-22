@@ -2876,33 +2876,35 @@ b:number):UDim2 local c=math.floor(math.min(math.clamp(b,al.minSize.Y,al.default
 math.floor(math.min(e,am,c*al.maxAspectRatio)),c)end local function al(am:Profile,b:number,c:number):UDim2 local d,e=
 math.min(math.clamp(b,am.minSize.X,am.defaultSize.X),b),math.min(math.clamp(c,am.minSize.Y,am.defaultSize.Y),c)e=math.
 floor(math.min(e,d/(am.minAspectRatio::number)))d=math.floor(math.min(d,e*am.maxAspectRatio))return UDim2.fromOffset(d,e
-)end function af.fit(am:Vector2?,b:ae.Mode?):UDim2 local c=af.profile(b)if not am or am.X<ag or am.Y<ag then return
-UDim2.fromOffset(c.defaultSize.X,c.defaultSize.Y)end local d,e=math.min(am.X*c.maxOccupancyX,am.X-c.marginFloorX),ai(c,
-am.Y)if c.minAspectRatio then return al(c,d,e)end return ak(c,d,e)end return af end)()end},{{1,2,{'Rayfield'},{{39,1,{
-'utility'},{{55,2,{'lockable'}},{66,2,{'persistenceWrite'}},{57,2,{'moveable'}},{58,2,{'network'}},{70,2,{'textMetrics'}
-},{41,2,{'assetResolver'}},{44,2,{'enums'}},{62,2,{'persistence'}},{71,2,{'variables'}},{64,2,{'persistencePaths'}},{67,
-2,{'runtime'}},{47,2,{'flagNames'}},{60,2,{'ordering'}},{56,2,{'log'}},{63,2,{'persistenceConfig'}},{48,2,{'fontManager'
-}},{53,2,{'layouts'}},{59,2,{'odometer'}},{69,2,{'sia'}},{43,2,{'constants'}},{65,2,{'persistenceSettings'}},{72,2,{
-'windowSizing'}},{68,2,{'services'}},{50,2,{'heartbeat'}},{46,2,{'filesystemManager'}},{40,2,{'HapticEngine'}},{52,2,{
-'imageCache'}},{54,2,{'locale'}},{51,2,{'image'}},{61,2,{'path'}},{45,2,{'filesystem'}},{42,2,{'colors'}},{49,2,{
-'functions'}}}},{31,1,{'themes'},{{37,2,{'rose'}},{32,2,{'amethyst'}},{36,2,{'frost'}},{33,2,{'cobalt'}},{35,2,{'ember'}
-},{34,2,{'default'}}}},{38,2,{'types'}},{2,1,{'components'},{{10,2,{'drag'}},{16,2,{'popup'}},{27,2,{'text'}},{22,2,{
-'stat'}},{8,2,{'descriptor'}},{30,2,{'window'}},{15,2,{'notification'}},{26,2,{'tag'}},{3,2,{'action'}},{21,2,{'slider'}
-},{17,2,{'progress'}},{23,2,{'tab'}},{6,2,{'colorpicker'}},{29,2,{'toggle'}},{12,2,{'group'}},{28,2,{'toast'}},{5,2,{
-'chrome'}},{25,2,{'tabSelector'}},{24,2,{'tabSection'}},{13,2,{'input'}},{9,2,{'divider'}},{20,2,{'sidebar'}},{4,2,{
-'button'}},{7,2,{'console'}},{18,2,{'search'}},{19,2,{'section'}},{11,2,{'dropdown'}},{14,2,{'keybind'}}}}}}},'0.4.1',
-'Rayfield',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,pcall,xpcall,tostring,tonumber
-,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)return j end,al.wrap,ae.sub,ae.match,ae.gmatch
-if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then af=r end end local q=af and af.defer local r,s,
-t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]='ModuleScript',[3]='Script',[4]='LocalScript',[5]=
-'StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function(A)local B,C=A.Name,A.Parent while C do B=C.Name..
-'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B={}for C in ai,z[A]do j(B,C)end return B end},
-GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E in ai,C:GetDescendants()do j(B,E)end end return
-B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]for E in ai,D do if E.Name==B then return E end
-end if C then for E in ai,D do return E:FindFirstChild(B,true)end end end},FindFirstAncestor={{'string'},function(A,B)
-local C=A.Parent while C do if C.Name==B then return C end C=C.Parent end end},WaitForChild={{'string','number?'},
-function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,G=D[1],D[2],{}for H,I in ai,E do local J,K=
-o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
+)end local function am(b:Profile):Profile local c=table.clone(b)c.defaultSize=Vector2.new(520,420)c.minSize=Vector2.new(
+400,320)c.maxOccupancyX=0.88 c.maxOccupancyY=0.72 c.marginFloorX=16 c.marginFloorY=20 return c end function af.fit(b:
+Vector2?,c:ae.Mode?):UDim2 local d=af.profile(c)if not b or b.X<ag or b.Y<ag then return UDim2.fromOffset(d.defaultSize.
+X,d.defaultSize.Y)end if b.X<900 or b.Y<600 then d=am(d)end local e,f=math.min(b.X*d.maxOccupancyX,b.X-d.marginFloorX),
+ai(d,b.Y)if d.minAspectRatio then return al(d,e,f)end return ak(d,e,f)end return af end)()end},{{1,2,{'Rayfield'},{{2,1,
+{'components'},{{4,2,{'button'}},{12,2,{'group'}},{25,2,{'tabSelector'}},{30,2,{'window'}},{19,2,{'section'}},{15,2,{
+'notification'}},{29,2,{'toggle'}},{16,2,{'popup'}},{11,2,{'dropdown'}},{13,2,{'input'}},{28,2,{'toast'}},{27,2,{'text'}
+},{8,2,{'descriptor'}},{23,2,{'tab'}},{18,2,{'search'}},{26,2,{'tag'}},{14,2,{'keybind'}},{9,2,{'divider'}},{24,2,{
+'tabSection'}},{22,2,{'stat'}},{21,2,{'slider'}},{20,2,{'sidebar'}},{10,2,{'drag'}},{7,2,{'console'}},{5,2,{'chrome'}},{
+6,2,{'colorpicker'}},{3,2,{'action'}},{17,2,{'progress'}}}},{38,2,{'types'}},{31,1,{'themes'},{{35,2,{'ember'}},{32,2,{
+'amethyst'}},{37,2,{'rose'}},{36,2,{'frost'}},{33,2,{'cobalt'}},{34,2,{'default'}}}},{39,1,{'utility'},{{43,2,{
+'constants'}},{41,2,{'assetResolver'}},{50,2,{'heartbeat'}},{59,2,{'odometer'}},{56,2,{'log'}},{51,2,{'image'}},{62,2,{
+'persistence'}},{57,2,{'moveable'}},{68,2,{'services'}},{49,2,{'functions'}},{40,2,{'HapticEngine'}},{52,2,{'imageCache'
+}},{46,2,{'filesystemManager'}},{72,2,{'windowSizing'}},{58,2,{'network'}},{60,2,{'ordering'}},{45,2,{'filesystem'}},{61
+,2,{'path'}},{67,2,{'runtime'}},{42,2,{'colors'}},{70,2,{'textMetrics'}},{71,2,{'variables'}},{65,2,{
+'persistenceSettings'}},{69,2,{'sia'}},{48,2,{'fontManager'}},{63,2,{'persistenceConfig'}},{54,2,{'locale'}},{44,2,{
+'enums'}},{66,2,{'persistenceWrite'}},{64,2,{'persistencePaths'}},{47,2,{'flagNames'}},{53,2,{'layouts'}},{55,2,{
+'lockable'}}}}}}},'0.4.1','Rayfield',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,
+pcall,xpcall,tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)return j end,al.
+wrap,ae.sub,ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then af=r end end
+local q=af and af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]='ModuleScript',[3]=
+'Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function(A)local B,C=A.Name
+,A.Parent while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B={}for C in ai,z[A]
+do j(B,C)end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E in ai,C:
+GetDescendants()do j(B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]for E in
+ai,D do if E.Name==B then return E end end if C then for E in ai,D do return E:FindFirstChild(B,true)end end end},
+FindFirstAncestor={{'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end C=C.Parent end end
+},WaitForChild={{'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,G=D[1],
+D[2],{}for H,I in ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
 "Expected ':' not '.' calling member function "..C,2)end local I={...}for J,K in ai,G do local L=I[J]local M,N,O=b(L),K[
 1],K[2]if L==nil and not O then ah('Argument '..L..' missing or nil',3)end if N~='any'and M~=N and not(M=='nil'and O)
 then ah('Argument '..J..' expects type "'..N..'", got "'..M..'"',2)end end return F(H,...)end end local function C(D,E,F

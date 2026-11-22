@@ -165,11 +165,28 @@ local function fitHorizontal(profile: Profile, availableX: number, availableY: n
     return UDim2.fromOffset(width, height)
 end
 
+-- Katchi fork: phones and small tablets get their own compact profile. The roomy
+-- 920x640 desktop ideal must never eat a whole phone screen.
+local function compactProfile(profile: Profile): Profile
+    local p = table.clone(profile)
+    p.defaultSize = Vector2.new(520, 420)
+    p.minSize = Vector2.new(400, 320)
+    p.maxOccupancyX = 0.88
+    p.maxOccupancyY = 0.72
+    p.marginFloorX = 16
+    p.marginFloorY = 20
+    return p
+end
+
 function windowSizing.fit(viewport: Vector2?, mode: layouts.Mode?): UDim2
     local profile = windowSizing.profile(mode)
 
     if not viewport or viewport.X < minPlausibleViewport or viewport.Y < minPlausibleViewport then
         return UDim2.fromOffset(profile.defaultSize.X, profile.defaultSize.Y)
+    end
+
+    if viewport.X < 900 or viewport.Y < 600 then
+        profile = compactProfile(profile)
     end
 
     local availableX = math.min(viewport.X * profile.maxOccupancyX, viewport.X - profile.marginFloorX)
