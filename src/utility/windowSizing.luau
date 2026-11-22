@@ -78,10 +78,11 @@ local profiles = {
         chromeHeight = layouts.top.chromeHeight,
     } :: Profile,
     sidebar = {
-        defaultSize = Vector2.new(685, 450),
+        -- Katchi fork: roomier sidebar window so dense feature tabs need less scrolling.
+        defaultSize = Vector2.new(920, 640),
         -- the floor sits where a rail plus a usable card still fit, in the same band the other
         -- landscape libraries settle on rather than something we invented.
-        minSize = Vector2.new(560, 350),
+        minSize = Vector2.new(640, 420),
 
         -- the mirror of the portrait window: width is what the layout is for, so it takes more
         -- of the screen across. The vertical cap is looser than the top layout's because a
