@@ -19,6 +19,7 @@ local odometer = require(utility.odometer)
 local moveable = require(utility.moveable)
 local lockable = require(utility.lockable)
 local locale = require(utility.locale)
+local inlineDescription = require(utility.inlineDescription)
 local hapticEngine = require(utility.HapticEngine)
 
 -- Decimal places implied by an increment (0.1 -> 1, 0.25 -> 2, 1 -> 0). Used so
@@ -320,8 +321,9 @@ function Slider.new(tab, properties)
         self:_endDrag()
     end)
 
-    if self.description and not self.minimal then
-        self.descriptor = require(script.Parent.descriptor).new(self.tab, { description = self.description })
+    -- descriptions live inside the 65px box, below the title/track; a minimal slider has no title
+    if not self.minimal then
+        self.descriptor = inlineDescription.attach(self, 4, 46, 15)
     end
 
     -- pick wide vs stacked from the real width, and keep it in sync if that width changes
@@ -489,8 +491,12 @@ function Slider:_applyLayout()
     end
     self._layoutMode = mode
 
+    local descriptionLabel = if self.descriptor then self.descriptor.titleLabel else nil
+
     if mode == "narrow" then
-        self:_setMainHeight(70)
+        -- stacked: title/value on top, full-width track at the bottom. A description needs its
+        -- own strip between them, so give the box the extra height and drop the label into it.
+        self:_setMainHeight(if descriptionLabel then 88 else 70)
 
         self.container.AnchorPoint = Vector2.new(0, 0)
         self.container.Position = UDim2.new(0, 20, 0, 14)
@@ -503,11 +509,19 @@ function Slider:_applyLayout()
         self.track.AnchorPoint = Vector2.new(0.5, 1)
         self.track.Position = UDim2.new(0.5, 0, 1, -14)
         self.track.Size = UDim2.new(1, -30, 0, 14)
+
+        if descriptionLabel then
+            descriptionLabel.Position = UDim2.new(0, 20, 0, 36)
+            descriptionLabel.Size = UDim2.new(1, -40, 0, 15)
+        end
     else
         self:_setMainHeight(65)
 
-        self.container.AnchorPoint = Vector2.new(0, 0.5)
-        self.container.Position = UDim2.new(0, 20, 0.5, 0)
+        -- lift the left column when there's a description so its value row clears the label
+        self.container.AnchorPoint = if descriptionLabel then Vector2.new(0, 0) else Vector2.new(0, 0.5)
+        self.container.Position = if descriptionLabel
+            then UDim2.new(0, 20, 0, 4)
+            else UDim2.new(0, 20, 0.5, 0)
         self.container.Size = UDim2.new(0, 170, 0, 33)
         self.containerLayout.FillDirection = Enum.FillDirection.Vertical
         self.titleFlex.FlexMode = Enum.UIFlexMode.None
@@ -517,6 +531,11 @@ function Slider:_applyLayout()
         self.track.AnchorPoint = Vector2.new(1, 0.5)
         self.track.Position = UDim2.new(1, -15, 0.5, 0)
         self.track.Size = UDim2.new(0, 222, 0, 14)
+
+        if descriptionLabel then
+            descriptionLabel.Position = UDim2.new(0, 20, 0, 46)
+            descriptionLabel.Size = UDim2.new(1, -40, 0, 15)
+        end
     end
 end
 

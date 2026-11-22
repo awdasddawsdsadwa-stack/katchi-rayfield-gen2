@@ -99,7 +99,7 @@ local function applyFilter(window, query)
     for _, entry in window._searchUnits do
         local match = query == "" or string.find(entry.text, query, 1, true) ~= nil
         entry.unit.main.Visible = match
-        if entry.unit.descriptor then
+        if entry.unit.descriptor and entry.unit.descriptor.main then
             entry.unit.descriptor.main.Visible = match
         end
         anyVisible = anyVisible or match
@@ -120,13 +120,13 @@ local function gatherUnits(window)
             text = string.lower(unitText(unit)),
             homeParent = main.Parent,
             homeOrder = main.LayoutOrder,
-            descOrder = unit.descriptor and unit.descriptor.main.LayoutOrder,
+            descOrder = unit.descriptor and unit.descriptor.main and unit.descriptor.main.LayoutOrder,
         })
 
         main.LayoutOrder = order * 10
         main.Parent = window.searchPage
         main.Visible = true
-        if unit.descriptor then
+        if unit.descriptor and unit.descriptor.main then
             unit.descriptor.main.LayoutOrder = order * 10 + 1
             unit.descriptor.main.Parent = window.searchPage
             unit.descriptor.main.Visible = true

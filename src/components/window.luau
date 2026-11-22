@@ -656,7 +656,21 @@ function Window.new(properties)
         order = 1,
 
         callback = function()
-            self:ToggleHide()
+            -- Katchi fork: closing asks first; only "Yes" unloads for good.
+            self:Popup({
+                title = "Close Katchi Hub?",
+                content = "Are you sure you want to permanently close the UI? Any unsaved changes will be lost.",
+                options = {
+                    { text = "No", style = "neutral" },
+                    {
+                        text = "Yes",
+                        style = "danger",
+                        callback = function()
+                            self:Unload()
+                        end,
+                    },
+                },
+            })
         end,
     })
 
@@ -666,7 +680,8 @@ function Window.new(properties)
         order = 2,
 
         callback = function()
-            self:ToggleMinimise()
+            -- Katchi fork: "-" collapses to the small show button instead of the top bar.
+            self:ToggleHide()
         end,
     })
 

@@ -18,6 +18,7 @@ local functions = require(utility.functions)
 local moveable = require(utility.moveable)
 local lockable = require(utility.lockable)
 local locale = require(utility.locale)
+local inlineDescription = require(utility.inlineDescription)
 local hapticEngine = require(utility.HapticEngine)
 
 function Toggle.new(tab, properties)
@@ -54,8 +55,9 @@ function Toggle.new(tab, properties)
         self:_buildFull()
     end
 
-    if self.description and not self.compact then
-        self.descriptor = require(script.Parent.descriptor).new(self.tab, { description = self.description })
+    -- full-width descriptions live inside the 41px box, under the title; a compact row has no room
+    if not self.compact then
+        self.descriptor = inlineDescription.attach(self, 4, 22, 15)
     end
 
     return self
@@ -174,13 +176,14 @@ function Toggle:_buildFull()
     self.stroke = window:StyleElementBody(self.main)
     self.hoverOverlay = window:CreateHoverOverlay(self.main)
 
+    -- title sits at the top of the box so the inline description fits underneath it
     self.container = window:Create("Frame", {
         BorderSizePixel = 0,
 
         Parent = self.main,
         Size = UDim2.new(0, 170, 0, 16),
-        Position = UDim2.new(0, 20, 0.5, 0),
-        AnchorPoint = Vector2.new(0, 0.5),
+        Position = UDim2.new(0, 20, 0, 4),
+        AnchorPoint = Vector2.new(0, 0),
         BackgroundTransparency = 1,
     })
 

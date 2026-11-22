@@ -18,6 +18,7 @@ local functions = require(utility.functions)
 local moveable = require(utility.moveable)
 local lockable = require(utility.lockable)
 local locale = require(utility.locale)
+local inlineDescription = require(utility.inlineDescription)
 local hapticEngine = require(utility.HapticEngine)
 
 function Button.new(tab, properties)
@@ -40,9 +41,10 @@ function Button.new(tab, properties)
         self:_buildFull()
     end
 
-    -- Descriptions don't belong on a compact row element.
-    if self.description and not self.compact then
-        self.descriptor = require(script.Parent.descriptor).new(self.tab, { description = self.description })
+    -- 43px full-width box has room for the title plus an inline description underneath;
+    -- a compact row element is content-sized and stays without one.
+    if not self.compact then
+        self.descriptor = inlineDescription.attach(self, 4, 22, 15)
     end
 
     return self
@@ -71,13 +73,14 @@ function Button:_buildFull()
     self.stroke = self.window:StyleElementBody(self.main)
     self.hoverOverlay = self.window:CreateHoverOverlay(self.main)
 
+    -- title sits at the top of the box so the inline description fits underneath it
     self.container = self.window:Create("Frame", {
         BorderSizePixel = 0,
 
         Parent = self.main,
         Size = UDim2.new(0, 170, 0, 16),
-        Position = UDim2.new(0, 20, 0.5, 0),
-        AnchorPoint = Vector2.new(0, 0.5),
+        Position = UDim2.new(0, 20, 0, 4),
+        AnchorPoint = Vector2.new(0, 0),
         BackgroundTransparency = 1,
     })
 

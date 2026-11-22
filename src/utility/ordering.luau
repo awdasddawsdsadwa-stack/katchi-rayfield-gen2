@@ -15,7 +15,8 @@ type OrderedElement = {
 
 local function assignOrder(element: OrderedElement, order: number)
     element.main.LayoutOrder = order
-    if element.descriptor then
+    -- inline descriptors have no separate .main frame (their label lives inside the element)
+    if element.descriptor and element.descriptor.main then
         element.descriptor.main.LayoutOrder = order + 1
     end
 end
