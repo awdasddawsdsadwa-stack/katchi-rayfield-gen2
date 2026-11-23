@@ -55,11 +55,11 @@ function Toggle.new(tab, properties)
         self:_buildFull()
     end
 
-    -- full-width descriptions live inside the 41px box, under the title. The 70px right inset
-    -- keeps a long description clear of the pill, which is centred on the same row. A compact
+    -- full-width descriptions live inside the 60px box, under the title. The 70px right inset
+    -- keeps a long description clear of the pill, which sits to the right of both rows. A compact
     -- row has no room for one.
     if not self.compact then
-        self.descriptor = inlineDescription.attach(self, 4, 22, 15, 70)
+        self.descriptor = inlineDescription.attach(self, 10, 30, 15, 70)
     end
 
     return self
@@ -165,7 +165,7 @@ function Toggle:_buildFull()
     local window = self.window
 
     self.main = window:Create("Frame", {
-        Size = UDim2.new(1, -20, 0, 41),
+        Size = UDim2.new(1, -20, 0, 60),
         BorderSizePixel = 0,
         Name = self.name,
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -178,13 +178,13 @@ function Toggle:_buildFull()
     self.stroke = window:StyleElementBody(self.main)
     self.hoverOverlay = window:CreateHoverOverlay(self.main)
 
-    -- title sits at the top of the box so the inline description fits underneath it
+    -- title sits near the top of the box so the inline description fits underneath it
     self.container = window:Create("Frame", {
         BorderSizePixel = 0,
 
         Parent = self.main,
         Size = UDim2.new(0, 170, 0, 16),
-        Position = UDim2.new(0, 20, 0, 4),
+        Position = UDim2.new(0, 20, 0, 10),
         AnchorPoint = Vector2.new(0, 0),
         BackgroundTransparency = 1,
     })
@@ -239,9 +239,9 @@ function Toggle:_buildFull()
         Parent = self.main,
     })
 
-    -- pill pinned to the right edge
+    -- pill pinned to the right edge, vertically centred in the taller box
     self:_buildSwitch(self.main)
-    self.functionContainer.Position = UDim2.new(1, -15, 0, 20)
+    self.functionContainer.Position = UDim2.new(1, -15, 0, 30)
     self.functionContainer.AnchorPoint = Vector2.new(1, 0.5)
 
     self.window:_wireElementHover(self)
@@ -258,7 +258,7 @@ function Toggle:_buildFull()
             :Create(
                 self.main,
                 TweenInfo.new(0.6, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out),
-                { Size = UDim2.new(1, -26, 0, 41) }
+                { Size = UDim2.new(1, -26, 0, 60) }
             )
             :Play()
 
@@ -270,7 +270,7 @@ function Toggle:_buildFull()
             :Create(
                 self.main,
                 TweenInfo.new(0.25, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out),
-                { Size = UDim2.new(1, -20, 0, 41) }
+                { Size = UDim2.new(1, -20, 0, 60) }
             )
             :Play()
         variables.tweenService
