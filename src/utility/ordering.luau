@@ -10,7 +10,8 @@
 
 type OrderedElement = {
     main: GuiObject,
-    descriptor: { main: GuiObject }?,
+    -- inline descriptors have no separate .main frame, so the field is optional here too
+    descriptor: { main: GuiObject? }?,
 }
 
 local function assignOrder(element: OrderedElement, order: number)

@@ -19,6 +19,7 @@ local moveable = require(utility.moveable)
 local lockable = require(utility.lockable)
 local constants = require(utility.constants)
 local locale = require(utility.locale)
+local inlineDescription = require(utility.inlineDescription)
 local hapticEngine = require(utility.HapticEngine)
 
 -- Full hue wheel top (red) to bottom (back to red) for the vertical hue bar.
@@ -300,8 +301,14 @@ function ColorPicker.new(tab, properties)
         variables.tweenService:Create(self.hoverOverlay, fadeInfo, { BackgroundTransparency = 1 }):Play()
     end)
 
-    if self.description then
-        self.descriptor = require(script.Parent.descriptor).new(self.tab, { description = self.description })
+    -- The description sits under the title inside the header pill. The preview pill shares that
+    -- row, so the label is inset past it; lifting the title to the top of the pill leaves the
+    -- description a clear strip without changing the header height or any open/close geometry.
+    local descriptor = inlineDescription.attach(self, 4, 22, 15, 60)
+    if descriptor then
+        self.container.AnchorPoint = Vector2.new(0, 0)
+        self.container.Position = UDim2.new(0, 20, 0, 4)
+        self.descriptor = descriptor
     end
 
     -- establish the picker's hidden state once, from the single visibility list

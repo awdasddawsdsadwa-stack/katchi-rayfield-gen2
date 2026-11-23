@@ -18,6 +18,7 @@ local functions = require(utility.functions)
 local image = require(utility.image)
 local constants = require(utility.constants)
 local locale = require(utility.locale)
+local inlineDescription = require(utility.inlineDescription)
 local hapticEngine = require(utility.HapticEngine)
 local windowSizing = require(utility.windowSizing)
 local lockable = require(utility.lockable)
@@ -698,8 +699,17 @@ function Dropdown.new(tab, properties)
             :Play()
     end)
 
-    if self.description then
-        self.descriptor = require(script.Parent.descriptor).new(self.tab, { description = self.description })
+    -- The description belongs inside the 41px header pill, under the title. To make room, lift
+    -- the title and the selected-value/chevron pair to the top of the pill; the old centred row
+    -- would sit on top of the description. Header height, panel geometry and the open/close
+    -- height tweens stay untouched.
+    local descriptor = inlineDescription.attach(self, 4, 22, 15)
+    if descriptor then
+        self.container.AnchorPoint = Vector2.new(0, 0)
+        self.container.Position = UDim2.new(0, 20, 0, 4)
+        self.selectedLabel.Position = UDim2.new(1, -41, 0, 12)
+        self.chevron.Position = UDim2.new(1, -18, 0, 12)
+        self.descriptor = descriptor
     end
 
     return self

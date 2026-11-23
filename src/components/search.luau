@@ -99,6 +99,7 @@ local function applyFilter(window, query)
     for _, entry in window._searchUnits do
         local match = query == "" or string.find(entry.text, query, 1, true) ~= nil
         entry.unit.main.Visible = match
+        -- inline descriptors have no separate .main; their label travels with the element
         if entry.unit.descriptor and entry.unit.descriptor.main then
             entry.unit.descriptor.main.Visible = match
         end

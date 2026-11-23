@@ -19,6 +19,7 @@ local moveable = require(utility.moveable)
 local lockable = require(utility.lockable)
 local locale = require(utility.locale)
 local constants = require(utility.constants)
+local inlineDescription = require(utility.inlineDescription)
 local hapticEngine = require(utility.HapticEngine)
 local enums = require(utility.enums)
 local log = require(utility.log)
@@ -243,8 +244,12 @@ function Keybind.new(tab, properties)
 
     self.window:_wireElementHover(self)
 
-    if self.description then
-        self.descriptor = require(script.Parent.descriptor).new(self.tab, { description = self.description })
+    -- As with Input, the key pill owns the middle of the bar, so a description goes in a strip
+    -- beneath it. Only described keybinds grow; no main.Size tween needs adjusting.
+    local descriptor = inlineDescription.attach(self, 4, 38, 15)
+    if descriptor then
+        self.main.Size = UDim2.new(1, -20, 0, 56)
+        self.descriptor = descriptor
     end
 
     self:_sizeBox(false) -- initial hug, no animation

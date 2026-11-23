@@ -55,9 +55,11 @@ function Toggle.new(tab, properties)
         self:_buildFull()
     end
 
-    -- full-width descriptions live inside the 41px box, under the title; a compact row has no room
+    -- full-width descriptions live inside the 41px box, under the title. The 70px right inset
+    -- keeps a long description clear of the pill, which is centred on the same row. A compact
+    -- row has no room for one.
     if not self.compact then
-        self.descriptor = inlineDescription.attach(self, 4, 22, 15)
+        self.descriptor = inlineDescription.attach(self, 4, 22, 15, 70)
     end
 
     return self
