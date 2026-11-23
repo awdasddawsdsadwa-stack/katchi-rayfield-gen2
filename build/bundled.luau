@@ -1625,7 +1625,7 @@ or c.Name or'Switch',icon=c.icon or c.Icon,description=c.description or c.Descri
 ForgetState or b.forgetState,compact=b.compact or false,flag=c.flag or c.Flag or(not(c.forgetState or c.ForgetState or b
 .forgetState)and ah.deriveFlagFromName(c.name or c.Name or'Switch')or nil),callback=c.callback or c.Callback or function
 ()end,value=if(c.value or c.Value)~=nil then(c.value or c.Value)else false},ae)d.window:_registerControl(d)if d.compact
-then d:_buildCompact()else d:_buildFull()end if not d.compact then d.descriptor=al.attach(d,4,22,15,70)end return d end
+then d:_buildCompact()else d:_buildFull()end if not d.compact then d.descriptor=al.attach(d,10,30,15,70)end return d end
 function ae._buildSwitch(b,c)local d=b.window b.functionContainer=d:Create('Frame',{BorderSizePixel=0,Size=UDim2.
 fromOffset(50,21),BackgroundTransparency=1,Parent=c},{BackgroundColor3='ToggleTrack'})d:Create('UICorner',{CornerRadius=
 UDim.new(0,15),Parent=b.functionContainer})b.containerStroke=d:Create('UIStroke',{Transparency=1,Parent=b.
@@ -1642,10 +1642,10 @@ ColorSequenceKeypoint.new(0,Color3.fromRGB(30,30,30)),ColorSequenceKeypoint.new(
 Transparency=NumberSequence.new{NumberSequenceKeypoint.new(0,1),NumberSequenceKeypoint.new(1,0.35)},Parent=b.overlay})
 return b.functionContainer end function ae._performToggle(b)am.click()b.value=not b.value b:_animateIndicator()b.window:
 _siaUsed(b,if b.value then'on'else'off',b.value)b.window:_runGuarded(b,b.callback,b.value)b.window:_persist(b)end
-function ae._buildFull(b)local c=b.window b.main=c:Create('Frame',{Size=UDim2.new(1,-20,0,41),BorderSizePixel=0,Name=b.
+function ae._buildFull(b)local c=b.window b.main=c:Create('Frame',{Size=UDim2.new(1,-20,0,60),BorderSizePixel=0,Name=b.
 name,BackgroundColor3=Color3.fromRGB(255,255,255),BackgroundTransparency=1,Parent=b.tab.tabPage},{BackgroundTransparency
 ='ElementTransparency'})b.stroke=c:StyleElementBody(b.main)b.hoverOverlay=c:CreateHoverOverlay(b.main)b.container=c:
-Create('Frame',{BorderSizePixel=0,Parent=b.main,Size=UDim2.new(0,170,0,16),Position=UDim2.new(0,20,0,4),AnchorPoint=
+Create('Frame',{BorderSizePixel=0,Parent=b.main,Size=UDim2.new(0,170,0,16),Position=UDim2.new(0,20,0,10),AnchorPoint=
 Vector2.new(0,0),BackgroundTransparency=1})b.containerLayout=c:Create('UIListLayout',{Padding=UDim.new(0,5),
 FillDirection=Enum.FillDirection.Horizontal,VerticalAlignment=Enum.VerticalAlignment.Center,HorizontalAlignment=Enum.
 HorizontalAlignment.Left,Parent=b.container})if b.icon then b.iconLabel=c:Create('ImageLabel',{Image=b.icon,Size=UDim2.
@@ -1655,12 +1655,12 @@ BackgroundTransparency=1,TextSize=16,AutomaticSize=Enum.AutomaticSize.X,TextXAli
 TextWrapped=true,LayoutOrder=1,TextTransparency=1,Parent=b.container},{TextColor3='ContentColor',FontFace='Font'})b.
 interact=c:Create('TextButton',{BackgroundTransparency=1,Size=UDim2.new(1,0,1,0),BorderSizePixel=0,Position=UDim2.
 fromScale(1,0.5),AnchorPoint=Vector2.new(1,0.5),TextTransparency=1,ZIndex=10,Parent=b.main})b:_buildSwitch(b.main)b.
-functionContainer.Position=UDim2.new(1,-15,0,20)b.functionContainer.AnchorPoint=Vector2.new(1,0.5)b.window:
+functionContainer.Position=UDim2.new(1,-15,0,30)b.functionContainer.AnchorPoint=Vector2.new(1,0.5)b.window:
 _wireElementHover(b)b.window:ConnectFor(b,b.interact.MouseButton1Click,function()ag.tweenService:Create(b.stroke,
 TweenInfo.new(0.25,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{Transparency=1}):Play()ag.tweenService:Create(b.
-main,TweenInfo.new(0.6,Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),{Size=UDim2.new(1,-26,0,41)}):Play()b:
+main,TweenInfo.new(0.6,Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),{Size=UDim2.new(1,-26,0,60)}):Play()b:
 _performToggle()task.wait(0.11)ag.tweenService:Create(b.main,TweenInfo.new(0.25,Enum.EasingStyle.Exponential,Enum.
-EasingDirection.Out),{Size=UDim2.new(1,-20,0,41)}):Play()ag.tweenService:Create(b.stroke,TweenInfo.new(0.25,Enum.
+EasingDirection.Out),{Size=UDim2.new(1,-20,0,60)}):Play()ag.tweenService:Create(b.stroke,TweenInfo.new(0.25,Enum.
 EasingStyle.Quint,Enum.EasingDirection.Out),{Transparency=b.window.theme.ElementStrokeTransparency}):Play()end)end
 function ae._buildCompact(b)local c=b.window b.main,b.stroke,b.interact=c:_buildCompactRow(b.tab,b.name,10)b.
 hoverOverlay=b.interact c:Create('UIPadding',{PaddingLeft=UDim.new(0,15),PaddingRight=UDim.new(0,15),Parent=b.interact})
@@ -2893,31 +2893,31 @@ floor(math.min(e,d/(am.minAspectRatio::number)))d=math.floor(math.min(d,e*am.max
 400,320)c.maxOccupancyX=0.88 c.maxOccupancyY=0.72 c.marginFloorX=16 c.marginFloorY=20 return c end function af.fit(b:
 Vector2?,c:ae.Mode?):UDim2 local d=af.profile(c)if not b or b.X<ag or b.Y<ag then return UDim2.fromOffset(d.defaultSize.
 X,d.defaultSize.Y)end if b.X<900 or b.Y<600 then d=am(d)end local e,f=math.min(b.X*d.maxOccupancyX,b.X-d.marginFloorX),
-ai(d,b.Y)if d.minAspectRatio then return al(d,e,f)end return ak(d,e,f)end return af end)()end},{{1,2,{'Rayfield'},{{31,1
-,{'themes'},{{33,2,{'cobalt'}},{37,2,{'rose'}},{35,2,{'ember'}},{34,2,{'default'}},{36,2,{'frost'}},{32,2,{'amethyst'}}}
-},{2,1,{'components'},{{12,2,{'group'}},{13,2,{'input'}},{20,2,{'sidebar'}},{18,2,{'search'}},{16,2,{'popup'}},{30,2,{
-'window'}},{26,2,{'tag'}},{8,2,{'descriptor'}},{21,2,{'slider'}},{29,2,{'toggle'}},{11,2,{'dropdown'}},{28,2,{'toast'}},
-{3,2,{'action'}},{27,2,{'text'}},{25,2,{'tabSelector'}},{24,2,{'tabSection'}},{23,2,{'tab'}},{22,2,{'stat'}},{19,2,{
-'section'}},{10,2,{'drag'}},{15,2,{'notification'}},{4,2,{'button'}},{6,2,{'colorpicker'}},{17,2,{'progress'}},{5,2,{
-'chrome'}},{14,2,{'keybind'}},{9,2,{'divider'}},{7,2,{'console'}}}},{39,1,{'utility'},{{51,2,{'image'}},{65,2,{
-'persistencePaths'}},{42,2,{'colors'}},{73,2,{'windowSizing'}},{64,2,{'persistenceConfig'}},{71,2,{'textMetrics'}},{54,2
-,{'layouts'}},{55,2,{'locale'}},{43,2,{'constants'}},{53,2,{'inlineDescription'}},{47,2,{'flagNames'}},{48,2,{
-'fontManager'}},{46,2,{'filesystemManager'}},{69,2,{'services'}},{40,2,{'HapticEngine'}},{44,2,{'enums'}},{70,2,{'sia'}}
-,{66,2,{'persistenceSettings'}},{72,2,{'variables'}},{60,2,{'odometer'}},{52,2,{'imageCache'}},{56,2,{'lockable'}},{41,2
-,{'assetResolver'}},{68,2,{'runtime'}},{49,2,{'functions'}},{63,2,{'persistence'}},{50,2,{'heartbeat'}},{67,2,{
-'persistenceWrite'}},{61,2,{'ordering'}},{62,2,{'path'}},{57,2,{'log'}},{58,2,{'moveable'}},{45,2,{'filesystem'}},{59,2,
-{'network'}}}},{38,2,{'types'}}}}},'0.4.1','Rayfield',string,task,setmetatable,error,next,table,unpack,coroutine,script,
-type,require,pcall,xpcall,tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)
-return j end,al.wrap,ae.sub,ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then
-af=r end end local q=af and af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]=
-'ModuleScript',[3]='Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function
-(A)local B,C=A.Name,A.Parent while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B
-={}for C in ai,z[A]do j(B,C)end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E
-in ai,C:GetDescendants()do j(B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]
-for E in ai,D do if E.Name==B then return E end end if C then for E in ai,D do return E:FindFirstChild(B,true)end end
-end},FindFirstAncestor={{'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end C=C.Parent
-end end},WaitForChild={{'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,
-G=D[1],D[2],{}for H,I in ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
+ai(d,b.Y)if d.minAspectRatio then return al(d,e,f)end return ak(d,e,f)end return af end)()end},{{1,2,{'Rayfield'},{{2,1,
+{'components'},{{16,2,{'popup'}},{21,2,{'slider'}},{11,2,{'dropdown'}},{20,2,{'sidebar'}},{29,2,{'toggle'}},{3,2,{
+'action'}},{6,2,{'colorpicker'}},{17,2,{'progress'}},{19,2,{'section'}},{28,2,{'toast'}},{26,2,{'tag'}},{10,2,{'drag'}},
+{13,2,{'input'}},{14,2,{'keybind'}},{15,2,{'notification'}},{9,2,{'divider'}},{24,2,{'tabSection'}},{4,2,{'button'}},{23
+,2,{'tab'}},{22,2,{'stat'}},{18,2,{'search'}},{5,2,{'chrome'}},{30,2,{'window'}},{7,2,{'console'}},{27,2,{'text'}},{25,2
+,{'tabSelector'}},{8,2,{'descriptor'}},{12,2,{'group'}}}},{38,2,{'types'}},{31,1,{'themes'},{{34,2,{'default'}},{32,2,{
+'amethyst'}},{36,2,{'frost'}},{33,2,{'cobalt'}},{35,2,{'ember'}},{37,2,{'rose'}}}},{39,1,{'utility'},{{43,2,{'constants'
+}},{41,2,{'assetResolver'}},{58,2,{'moveable'}},{44,2,{'enums'}},{51,2,{'image'}},{64,2,{'persistenceConfig'}},{70,2,{
+'sia'}},{60,2,{'odometer'}},{62,2,{'path'}},{46,2,{'filesystemManager'}},{55,2,{'locale'}},{47,2,{'flagNames'}},{69,2,{
+'services'}},{61,2,{'ordering'}},{57,2,{'log'}},{56,2,{'lockable'}},{73,2,{'windowSizing'}},{72,2,{'variables'}},{63,2,{
+'persistence'}},{71,2,{'textMetrics'}},{54,2,{'layouts'}},{42,2,{'colors'}},{52,2,{'imageCache'}},{45,2,{'filesystem'}},
+{40,2,{'HapticEngine'}},{68,2,{'runtime'}},{50,2,{'heartbeat'}},{67,2,{'persistenceWrite'}},{66,2,{'persistenceSettings'
+}},{65,2,{'persistencePaths'}},{53,2,{'inlineDescription'}},{59,2,{'network'}},{48,2,{'fontManager'}},{49,2,{'functions'
+}}}}}}},'0.4.1','Rayfield',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,pcall,xpcall,
+tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)return j end,al.wrap,ae.sub,
+ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then af=r end end local q=af and
+af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]='ModuleScript',[3]='Script',[4]=
+'LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function(A)local B,C=A.Name,A.Parent
+while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B={}for C in ai,z[A]do j(B,C)
+end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E in ai,C:GetDescendants()do j(
+B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]for E in ai,D do if E.Name==B
+then return E end end if C then for E in ai,D do return E:FindFirstChild(B,true)end end end},FindFirstAncestor={{
+'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end C=C.Parent end end},WaitForChild={{
+'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,G=D[1],D[2],{}for H,I in
+ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
 "Expected ':' not '.' calling member function "..C,2)end local I={...}for J,K in ai,G do local L=I[J]local M,N,O=b(L),K[
 1],K[2]if L==nil and not O then ah('Argument '..L..' missing or nil',3)end if N~='any'and M~=N and not(M=='nil'and O)
 then ah('Argument '..J..' expects type "'..N..'", got "'..M..'"',2)end end return F(H,...)end end local function C(D,E,F
