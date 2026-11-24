@@ -247,11 +247,14 @@ function Dropdown.new(tab, properties)
     self.selectedLabel = self.window:Create("TextLabel", {
         AnchorPoint = Vector2.new(1, 0.5),
         Position = UDim2.new(1, -41, 0.5, 0),
-        Size = UDim2.fromOffset(168, 15),
+        -- same height as the title row, with an explicit centre alignment so the picked value
+        -- sits on the row's midline instead of sitting high in a 15px, wrapped text box
+        Size = UDim2.fromOffset(168, 16),
         BorderSizePixel = 0,
         BackgroundTransparency = 1,
         TextSize = 15,
         TextXAlignment = Enum.TextXAlignment.Right,
+        TextYAlignment = Enum.TextYAlignment.Center,
         TextWrapped = true,
 
         -- Animation
@@ -676,25 +679,27 @@ function Dropdown.new(tab, properties)
         if self._isOpen or not self.window:_interactive() then
             return
         end
-        variables.tweenService
-            :Create(self.title, hoverTween, { TextColor3 = self.window.theme.ElementTextHoverColor })
-            :Play()
+        -- ChangeTheme mutates the theme table in place, so one lookup per hover event is safe
+        -- and avoids indexing through window/self for every property of the tween.
+        local theme = self.window.theme
+        variables.tweenService:Create(self.title, hoverTween, { TextColor3 = theme.ElementTextHoverColor }):Play()
         variables.tweenService:Create(self.hoverOverlay, hoverTween, { BackgroundTransparency = 0.97 }):Play()
         variables.tweenService
             :Create(self.stroke, hoverTween, {
-                Transparency = self.window.theme.ElementStrokeHoverTransparency,
-                Color = self.window.theme.ElementStrokeHover,
+                Transparency = theme.ElementStrokeHoverTransparency,
+                Color = theme.ElementStrokeHover,
             })
             :Play()
     end)
 
     self.window:ConnectFor(self, self.main.MouseLeave, function()
-        variables.tweenService:Create(self.title, hoverTween, { TextColor3 = self.window.theme.ContentColor }):Play()
+        local theme = self.window.theme
+        variables.tweenService:Create(self.title, hoverTween, { TextColor3 = theme.ContentColor }):Play()
         variables.tweenService:Create(self.hoverOverlay, hoverTween, { BackgroundTransparency = 1 }):Play()
         variables.tweenService
             :Create(self.stroke, hoverTween, {
-                Transparency = self.window.theme.ElementStrokeTransparency,
-                Color = self.window.theme.ElementStroke,
+                Transparency = theme.ElementStrokeTransparency,
+                Color = theme.ElementStroke,
             })
             :Play()
     end)
@@ -900,10 +905,17 @@ function Dropdown:_syncScrollHint()
     end
 
     local more = self._isOpen and windowSize.Y > 0 and canvasSize.Y - (at.Y + windowSize.Y) > 1
+    local goal = if more then scrollbarShown else 1
 
-    variables.tweenService
-        :Create(self.list, hintTween, { ScrollBarImageTransparency = if more then scrollbarShown else 1 })
-        :Play()
+    -- scrolling fires CanvasPosition every frame, but the hint only changes at the two ends.
+    -- Skip the redundant tween unless the state actually moved (the property read also keeps
+    -- this correct if something else repainted the bar).
+    if self._scrollHintGoal == goal and self.list.ScrollBarImageTransparency == goal then
+        return
+    end
+    self._scrollHintGoal = goal
+
+    variables.tweenService:Create(self.list, hintTween, { ScrollBarImageTransparency = goal }):Play()
 end
 
 -- Every option the search is currently letting through, which is what a bulk action applies to:

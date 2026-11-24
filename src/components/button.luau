@@ -41,10 +41,14 @@ function Button.new(tab, properties)
         self:_buildFull()
     end
 
-    -- 43px full-width box has room for the title plus an inline description underneath;
-    -- a compact row element is content-sized and stays without one.
+    -- A full-width button centres its title row and the inline description below it. Both fit
+    -- in the standard 43px box: the title takes the upper line, the description the lower one.
+    -- A compact row element is content-sized and stays without one.
     if not self.compact then
         self.descriptor = inlineDescription.attach(self, 4, 22, 15)
+        if self.descriptor then
+            self.descriptor.titleLabel.TextXAlignment = Enum.TextXAlignment.Center
+        end
     end
 
     return self
@@ -56,7 +60,7 @@ function Button:_runCallback()
     self.window:_runGuarded(self, self.callback)
 end
 
--- full-width: title/icon left, width-bounce on press
+-- full-width: title/icon centred in the box, width-bounce on press
 function Button:_buildFull()
     self.main = self.window:Create("Frame", {
         Size = UDim2.new(1, -20, 0, 43),
@@ -73,14 +77,19 @@ function Button:_buildFull()
     self.stroke = self.window:StyleElementBody(self.main)
     self.hoverOverlay = self.window:CreateHoverOverlay(self.main)
 
-    -- title sits at the top of the box so the inline description fits underneath it
+    -- The row is auto-sized to its content and centred on the box itself. A horizontal list
+    -- packs from the left whatever its HorizontalAlignment says, so centring the row (not the
+    -- list) is what actually centres the icon + title as one block. With a description the row
+    -- sits above its line; without one it sits on the box's vertical centre.
+    local hasDescription = self.description ~= nil
     self.container = self.window:Create("Frame", {
         BorderSizePixel = 0,
 
         Parent = self.main,
-        Size = UDim2.new(0, 170, 0, 16),
-        Position = UDim2.new(0, 20, 0, 4),
-        AnchorPoint = Vector2.new(0, 0),
+        AutomaticSize = Enum.AutomaticSize.X,
+        Size = UDim2.fromOffset(0, 16),
+        Position = UDim2.new(0.5, 0, if hasDescription then 0 else 0.5, if hasDescription then 4 else 0),
+        AnchorPoint = Vector2.new(0.5, if hasDescription then 0 else 0.5),
         BackgroundTransparency = 1,
     })
 
@@ -88,7 +97,6 @@ function Button:_buildFull()
         Padding = UDim.new(0, 5),
         FillDirection = Enum.FillDirection.Horizontal,
         VerticalAlignment = Enum.VerticalAlignment.Center,
-        HorizontalAlignment = Enum.HorizontalAlignment.Left,
 
         Parent = self.container,
     })
@@ -115,7 +123,8 @@ function Button:_buildFull()
         BackgroundTransparency = 1,
         TextSize = 16,
         AutomaticSize = Enum.AutomaticSize.X,
-        TextXAlignment = Enum.TextXAlignment.Left,
+        TextXAlignment = Enum.TextXAlignment.Center,
+        TextYAlignment = Enum.TextYAlignment.Center,
         TextWrapped = true,
         LayoutOrder = 1,
 
@@ -191,13 +200,39 @@ function Button:_buildCompact()
         Parent = self.interact,
     })
 
+    -- HorizontalAlignment does nothing on a horizontal list. One auto-sized content row plus
+    -- SpaceEvenly is what keeps the icon+title block centred, including when the title shrinks
+    -- on a tight row (the equal side gaps absorb the slack instead of piling it on the right).
     window:Create("UIListLayout", {
         FillDirection = Enum.FillDirection.Horizontal,
         VerticalAlignment = Enum.VerticalAlignment.Center,
-        HorizontalAlignment = Enum.HorizontalAlignment.Center,
+        HorizontalFlex = Enum.UIFlexAlignment.SpaceEvenly,
         Padding = UDim.new(0, 6),
 
         Parent = self.interact,
+    })
+
+    self.container = window:Create("Frame", {
+        AutomaticSize = Enum.AutomaticSize.X,
+        Size = UDim2.fromOffset(0, 16),
+        BorderSizePixel = 0,
+        BackgroundTransparency = 1,
+        LayoutOrder = 0,
+
+        Parent = self.interact,
+    })
+
+    window:Create("UIFlexItem", {
+        FlexMode = Enum.UIFlexMode.Shrink,
+        Parent = self.container,
+    })
+
+    window:Create("UIListLayout", {
+        Padding = UDim.new(0, 6),
+        FillDirection = Enum.FillDirection.Horizontal,
+        VerticalAlignment = Enum.VerticalAlignment.Center,
+
+        Parent = self.container,
     })
 
     if self.icon then
@@ -210,7 +245,7 @@ function Button:_buildCompact()
 
             ImageTransparency = 1, -- In = 0
 
-            Parent = self.interact,
+            Parent = self.container,
         }, { ImageColor3 = "ContentColor" })
     end
 
@@ -222,12 +257,13 @@ function Button:_buildCompact()
         BackgroundTransparency = 1,
         TextSize = 16,
         TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Center,
         TextTruncate = Enum.TextTruncate.AtEnd,
         LayoutOrder = 1,
 
         TextTransparency = 1, -- In = 0
 
-        Parent = self.interact,
+        Parent = self.container,
     }, { TextColor3 = "ContentColor", FontFace = "Font" })
 
     -- grows to its text, shrinks + ellipsizes when the row's tight
