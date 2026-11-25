@@ -42,7 +42,9 @@ local function keyName(value)
 end
 
 -- accept an EnumItem, a KeyCode name, or a mouse button name, fall back to unbound.
--- mouse buttons bind like any other key, so a string has to reach them too.
+-- mouse buttons bind like any other key, so a string has to reach them too. PlayerActions
+-- are accepted as well: they're a legitimate enum to hand us, even though only their
+-- default key can be matched against an InputObject (see playerActionKeys below).
 local function coerceKey(value)
     if typeof(value) == "EnumItem" then
         return value
@@ -60,8 +62,77 @@ local function coerceKey(value)
         if mouseOk and button and mouseNames[button] then
             return button
         end
+        local actionOk, action = pcall(function()
+            return Enum.PlayerActions[value]
+        end)
+        if actionOk and action then
+            return action
+        end
     end
     return Enum.KeyCode.Unknown
+end
+
+-- PlayerActions describe movement rather than physical keys. Roblox's defaults are the
+-- only sensible key to match them against; older executors may not have the enum at all.
+local playerActionKeys = {}
+pcall(function()
+    local actions = Enum.PlayerActions
+    if not actions then
+        return
+    end
+    for _, entry in {
+        { "CharacterForward", "W" },
+        { "CharacterBackward", "S" },
+        { "CharacterLeft", "A" },
+        { "CharacterRight", "D" },
+        { "CharacterJump", "Space" },
+    } do
+        local action = actions[entry[1]]
+        local key = Enum.KeyCode[entry[2]]
+        if action and key then
+            -- key by Value, not the EnumItem itself: some Enum shims return equal items
+            -- with distinct identities, which would make an EnumItem-keyed table miss.
+            playerActionKeys[action.Value] = key
+        end
+    end
+end)
+
+-- Shared, pure pieces of the capture pipeline. Toggle reuses these for its right-click
+-- rebinds so both elements agree on what a key means and how it matches an InputObject.
+Keybind.coerceKey = coerceKey
+Keybind.keyName = keyName
+Keybind.CAPTURE_CANCEL = {} -- distinct sentinel: Escape cancels, no real key is this table
+
+function Keybind.matchesKey(value, input)
+    if typeof(value) ~= "EnumItem" or value == Enum.KeyCode.Unknown then
+        return false
+    end
+    if value.EnumType == Enum.KeyCode then
+        return input.KeyCode == value
+    elseif value.EnumType == Enum.UserInputType then
+        return input.UserInputType == value
+    elseif value.EnumType == Enum.PlayerActions then
+        local mapped = playerActionKeys[value.Value]
+        return mapped ~= nil and input.KeyCode == mapped
+    end
+    return false
+end
+
+-- Next keyboard key while recording. Escape cancels, Backspace clears, Unknown/other
+-- input types are ignored; a real KeyCode is returned as-is.
+function Keybind.captureKeyboard(input)
+    if input.UserInputType ~= Enum.UserInputType.Keyboard then
+        return nil
+    end
+    local code = input.KeyCode
+    if code == Enum.KeyCode.Escape then
+        return Keybind.CAPTURE_CANCEL
+    elseif code == Enum.KeyCode.Backspace then
+        return Enum.KeyCode.Unknown
+    elseif code == Enum.KeyCode.Unknown then
+        return nil
+    end
+    return code
 end
 
 function Keybind.new(tab, properties)
@@ -307,15 +378,12 @@ end
 function Keybind:_capture(input)
     local key
     if input.UserInputType == Enum.UserInputType.Keyboard then
-        if input.KeyCode == Enum.KeyCode.Escape then
+        local captured = Keybind.captureKeyboard(input)
+        if captured == Keybind.CAPTURE_CANCEL then
             self:_stopRecording()
             return
         end
-        if input.KeyCode == Enum.KeyCode.Backspace then
-            self:_bind(Enum.KeyCode.Unknown)
-            return
-        end
-        key = input.KeyCode
+        key = captured
     elseif
         input.UserInputType == Enum.UserInputType.MouseButton2
         or input.UserInputType == Enum.UserInputType.MouseButton3
@@ -376,16 +444,7 @@ end
 
 -- does this input match the bound key (either a KeyCode or a mouse button)
 function Keybind:_matches(input)
-    local v = self.value
-    if typeof(v) ~= "EnumItem" or v == Enum.KeyCode.Unknown then
-        return false
-    end
-    if v.EnumType == Enum.KeyCode then
-        return input.KeyCode == v
-    elseif v.EnumType == Enum.UserInputType then
-        return input.UserInputType == v
-    end
-    return false
+    return Keybind.matchesKey(self.value, input)
 end
 
 -- hold mode: arm after holdThreshold (a quick tap never counts), fire callback(true) then

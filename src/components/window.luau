@@ -1009,6 +1009,11 @@ function Window:_restoreLate(element)
     local wasLoading = self._loading
     self._loading = true -- dont autosave the value we just read back
     persistence.applyTo(element, self._loadedConfig[element.flag])
+    -- a toggle's hidden keybind companion restores through the same config; it only exists
+    -- on flagged toggles, and SetKeybind(item, true) keeps the load quiet.
+    if element._keybindControl then
+        persistence.applyTo(element._keybindControl, self._loadedConfig[element._keybindControl.flag])
+    end
     self._loading = wasLoading
 end
 
@@ -1047,23 +1052,52 @@ function Window:_unregisterControl(control)
     if control.flag and self.controls[control.flag] == control then
         self.controls[control.flag] = nil
     end
+    -- a toggle's hidden keybind companion goes with it, so a removed element leaves no
+    -- stale hotkey behind for the next Save.
+    local keybindControl = control._keybindControl
+    if keybindControl and self.controls[keybindControl.flag] == keybindControl then
+        self.controls[keybindControl.flag] = nil
+    end
 end
 
--- find a keybind element currently bound to `key`, skipping `exclude` and unbound keys. lets
--- the menu-toggle keybind refuse a key an element keybind already owns. keybinds only live at
--- tab level (groups dont hold them), so a scan over each tab's elements catches them all.
-function Window:_keybindUsing(key, exclude)
+-- find whichever element currently owns `key`: a Keybind element, or a toggle with a
+-- recorded hotkey. skips `exclude` and unbound keys. Groups nest, so walk their children too.
+function Window:_keybindOwner(key, exclude)
     if typeof(key) ~= "EnumItem" or key == Enum.KeyCode.Unknown then
         return nil
     end
-    for _, tab in self.tabs do
-        for _, element in tab.elements do
-            if element ~= exclude and element.__type == "Keybind" and element.value == key then
-                return element
+
+    local function scan(elements)
+        for _, element in elements do
+            if element ~= exclude then
+                if element.__type == "Group" and element.elements then
+                    local found = scan(element.elements)
+                    if found then
+                        return found
+                    end
+                elseif element.__type == "Keybind" and element.value == key then
+                    return element
+                elseif element.__type == "Toggle" and element.keybind == key then
+                    return element
+                end
             end
+        end
+        return nil
+    end
+
+    for _, tab in self.tabs do
+        local found = scan(tab.elements)
+        if found then
+            return found
         end
     end
     return nil
+end
+
+-- historical name used by the menu-toggle keybind: still answer with its owner, now including
+-- toggle hotkeys so the menu key cant double-fire one.
+function Window:_keybindUsing(key, exclude)
+    return self:_keybindOwner(key, exclude)
 end
 
 function Window:Notify(properties)

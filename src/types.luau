@@ -89,6 +89,8 @@ export type ToggleProps = {
     icon: (string | number)?,
     flag: string?,
     value: boolean?,
+    -- right-click to record; a KeyCode / UserInputType / PlayerActions item, a key name, or nil
+    keybind: (EnumItem | string)?,
     forgetState: boolean?,
     callback: ((value: boolean) -> ())?,
 }
@@ -257,7 +259,10 @@ export type Button = Moveable & Lockable & {}
 
 export type Toggle = Moveable & Lockable & {
     value: boolean,
+    keybind: EnumItem, -- Enum.KeyCode.Unknown when unbound
     Set: (self: Toggle, value: boolean, skipCallback: boolean?) -> (),
+    SetKeybind: (self: Toggle, key: EnumItem | string | nil, skipChanged: boolean?) -> boolean,
+    GetKeybind: (self: Toggle) -> EnumItem,
 }
 
 export type Slider = Moveable & Lockable & {
