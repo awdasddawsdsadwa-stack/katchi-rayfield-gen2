@@ -22,11 +22,11 @@ local log = require(script.Parent.Parent.utility.log)
 local sectionInset = 20
 
 -- Clearance above a section that follows something. The rail's own list spacing already
--- separates it from the row above; this is the extra that makes it read as a new group.
-local spacingAbove = 6
+-- separates it from the row above; this is the small extra that makes it read as a new group.
+local spacingAbove = 3
 
 -- And under every section, so the first row beneath it isn't sat tight against the heading.
-local spacingBelow = 3
+local spacingBelow = 2
 
 -- Whether anything is already sitting above this one in the rail. The settings tab never gets
 -- a row, so it doesn't count, and a section that follows only another section still does.

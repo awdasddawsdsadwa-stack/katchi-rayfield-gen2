@@ -117,6 +117,44 @@ return function()
             expect(#calls).to.equal(2)
         end)
 
+        it("opens a keybind popup that explains the controls without stealing the capture", function()
+            local w = makeWindow()
+            local tab = w:CreateTab({ name = "Main" })
+            local toggle = tab:CreateToggle({ name = "Prompted" })
+
+            toggle.interact.MouseButton2Click:Fire()
+            local popup = toggle._keybindPopup
+            expect(popup).to.be.ok()
+            expect(popup.title).to.equal("Set Keybind")
+            expect(string.find(popup.content, "Backspace", 1, true)).to.be.ok()
+            expect(popup._closed).to.equal(false)
+            expect(toggle.recording).to.equal(true)
+
+            -- the dismiss button only acknowledges: the next key still binds
+            local interact
+            for _, instance in popup.screenGui:GetDescendants() do
+                if instance.ClassName == "TextButton" then
+                    interact = instance
+                end
+            end
+            expect(interact).to.be.ok()
+            interact.MouseButton1Click:Fire()
+            expect(popup._closed).to.equal(true)
+            expect(toggle.recording).to.equal(true)
+
+            fireKey(Enum.KeyCode.P)
+            expect(toggle:GetKeybind()).to.equal(Enum.KeyCode.P)
+            expect(toggle.recording).to.equal(false)
+
+            -- Escape cancels the capture and takes the card with it
+            toggle.interact.MouseButton2Click:Fire()
+            local second = toggle._keybindPopup
+            expect(second._closed).to.equal(false)
+            fireKey(Enum.KeyCode.Escape)
+            expect(second._closed).to.equal(true)
+            expect(toggle.recording).to.equal(false)
+        end)
+
         it("clears a binding with Backspace and works in a compact row", function()
             local w = makeWindow()
             local tab = w:CreateTab({ name = "Main" })

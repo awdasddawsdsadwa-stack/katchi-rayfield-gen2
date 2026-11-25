@@ -390,8 +390,8 @@ BackgroundTransparency=1,Size=UDim2.new(1,-30,0,0),Parent=j.tab.tabPage})j.windo
 SortOrder.LayoutOrder,Parent=j.main})j.titleLabel=j.window:Create('TextLabel',{AutomaticSize=Enum.AutomaticSize.Y,
 BackgroundTransparency=1,RichText=true,Size=UDim2.new(1,-90,0,0),Text=g.t(j.description),TextSize=12,TextWrapped=true,
 TextXAlignment=Enum.TextXAlignment.Left,TextTransparency=1,Parent=j.main},{TextColor3='ContentColor',FontFace='Font'})j.
-window:Create('Frame',{BackgroundTransparency=1,BorderSizePixel=0,LayoutOrder=1,Size=UDim2.fromOffset(0,15),Parent=j.
-main})return j end return f end)()end,[9]=function()local b,c,d=a(9)local e return(function(...)local f={}f.__index=f f.
+window:Create('Frame',{BackgroundTransparency=1,BorderSizePixel=0,LayoutOrder=1,Size=UDim2.fromOffset(0,8),Parent=j.main
+})return j end return f end)()end,[9]=function()local b,c,d=a(9)local e return(function(...)local f={}f.__index=f f.
 __type='Divider'local g,h,i,j,k,l,m,n,o=d(c.Parent.Parent.utility.moveable),d(c.Parent.Parent.utility.locale),1,12,10,14
 ,12,0.88,0.55 function f.new(p,q)q=if typeof(q)=='table'then q else{}local r,s=q.spacing or q.Spacing,q.text or q.Text
 local t=setmetatable({tab=assert(p,'Missing argument #1 (Tab expected)'),window=p.window,text=if s~=nil then tostring(s)
@@ -661,49 +661,49 @@ and ac._isOpen then ac:_close()end end function f.MoveTo(ac,ad)ac.tab:_moveEleme
 tab:_moveElement(ac,1)end function f.MoveToBottom(ac)ac.tab:_moveElement(ac,#ac.tab.elements)end function f.MoveUp(ac)
 local ad=table.find(ac.tab.elements,ac)if ad then ac.tab:_moveElement(ac,ad-1)end end function f.MoveDown(ac)local ad=
 table.find(ac.tab.elements,ac)if ad then ac.tab:_moveElement(ac,ad+1)end end p(f)return f end)()end,[12]=function()local
-aa,ab,ac=a(12)local ad return(function(...)local ae={}ae.__index=ae ae.__type='Group'local af,ag,ah,ai,aj=ac(ab.Parent.
-Parent.utility.moveable),ac(ab.Parent.Parent.utility.log),ac(ab.Parent.Parent.utility.ordering),8,{button=true,toggle=
-true,stat=true,slider=true}function ae.new(b,c)c=if typeof(c)=='table'then c else{}local d=string.lower(c.direction or c
-.Direction or'row')local e=d=='column'or d=='vertical'local f=not e local g=if f then Enum.FillDirection.Horizontal else
-Enum.FillDirection.Vertical local h,i=setmetatable({tab=assert(b,'Missing argument #1 (Tab expected)'),window=b.window,
-direction=g,compact=f,forgetState=b.forgetState,elements={}},ae),b.direction==Enum.FillDirection.Horizontal h.main=h.
-window:Create('Frame',{Name='Group',BackgroundTransparency=1,BorderSizePixel=0,AutomaticSize=Enum.AutomaticSize.Y,Size=
-if f then UDim2.new(1,-20,0,0)else UDim2.new(1,0,0,0),Parent=h.tab.tabPage})if i then h.main.Size=UDim2.new(0,0,0,0)h.
-window:Create('UIFlexItem',{FlexMode=Enum.UIFlexMode.Fill,Parent=h.main})end h.tabPage=h.main h.layout=h.window:Create(
-'UIListLayout',{FillDirection=g,SortOrder=Enum.SortOrder.LayoutOrder,Padding=UDim.new(0,ai),VerticalAlignment=if f then
-Enum.VerticalAlignment.Center else Enum.VerticalAlignment.Top,HorizontalAlignment=if f then Enum.HorizontalAlignment.
-Left else Enum.HorizontalAlignment.Center,Parent=h.main})return h end function ae._add(b,c,d)if b.compact and not aj[c]
-then ag.warn(`Rayfield: a row only holds compact elements (button/toggle/stat/slider), ignoring '{c}'. Use a column for it.`
-)return nil end local e=ac(ab.Parent[c]).new(b,d)table.insert(b.elements,e)ah(e,#b.elements*10)b.window:_restoreLate(e)
-if b.compact then b:_wrapChild(e)end b:_reflowRow()if not b.window.hidden then e:_setShown(true,true)end return e end
-function ae._reflowRow(b)if b.direction~=Enum.FillDirection.Horizontal then return end local c=#b.elements>0 for d,e in
-b.elements do if e.__type~='Group'then c=false break end end b.layout.Padding=if c then UDim.new(0,-10)else UDim.new(0,
-ai)end function ae._wrapChild(b,c)b.layout.Wraps=true b.layout.HorizontalFlex=Enum.UIFlexAlignment.Fill c._widthManaged=
-true local d=if c._minWidth then c:_minWidth()else 0 if d>0 then c.main.AutomaticSize=Enum.AutomaticSize.None c.main.
-Size=UDim2.new(0,d,c.main.Size.Y.Scale,c.main.Size.Y.Offset)end end function ae.CreateButton(b,c)return b:_add('button',
-c)end function ae.CreateToggle(b,c)return b:_add('toggle',c)end function ae.CreateSwitch(b,c)return b:_add('toggle',c)
-end function ae.CreateStat(b,c)return b:_add('stat',c)end function ae.CreateSlider(b,c)return b:_add('slider',c)end
-function ae.CreateDropdown(b,c)return b:_add('dropdown',c)end function ae.CreateSection(b,c)return b:_add('section',c)
-end function ae.CreateText(b,c)return b:_add('text',c)end function ae.CreateDivider(b,c)return b:_add('divider',c)end
-function ae._addGroup(b,c)c=if typeof(c)=='table'then table.clone(c)else{}if b.direction==Enum.FillDirection.Horizontal
-then b.layout.VerticalAlignment=Enum.VerticalAlignment.Top if b.tab.direction~=Enum.FillDirection.Horizontal then b.main
-.Size=UDim2.new(1,0,0,0)end end local d=ae.new(b,c)table.insert(b.elements,d)d.main.LayoutOrder=#b.elements*10 b:
-_reflowRow()return d end function ae.CreateGroup(b,c)return b:_addGroup(c)end function ae._moveElement(b,c,d)local e=
-table.find(b.elements,c)if not e then return end table.remove(b.elements,e)d=math.clamp(d,1,#b.elements+1)table.insert(b
-.elements,d,c)for f,g in b.elements do ah(g,f*10)end end function ae._setShown(b,c,d)for e,f in b.elements do f:
-_setShown(c,d)end end function ae._refreshTheme(b)for c,d in b.elements do if d._refreshTheme then d:_refreshTheme()end
-end end af(ae)return ae end)()end,[13]=function()local aa,ab,ac=a(13)local ad return(function(...)local ae={}ae.__index=
-ae ae.__type='Input'local af=ab.Parent.Parent.utility local ag,ah,ai,aj,b,c,d,e=ac(af.variables),ac(af.functions),ac(af.
-moveable),ac(af.lockable),ac(af.locale),ac(af.constants),ac(af.inlineDescription),ac(af.HapticEngine)local f,g=c.
-pillResizeInfo,TweenInfo.new(0.15,Enum.EasingStyle.Quint,Enum.EasingDirection.Out)local function h(i)local j,k=i:match
-'^([%d%.%-]+)%^([%d%.%-]+)$'if j and k then local l,m=tonumber(j),tonumber(k)if l and m then return l^m end end return
-tonumber(i)end function ae.new(i,j)j=if typeof(j)=='table'then j else{}local k=setmetatable({tab=assert(i,
-'Missing argument #1 (Tab expected)'),window=i.window,name=j.name or j.Name or'Input',icon=j.icon or j.Icon,description=
-j.description or j.Description,forgetState=j.forgetState or j.ForgetState or i.forgetState,placeholder=j.placeholder or
-j.Placeholder or'',numeric=j.numeric or j.Numeric or false,clearOnFocus=j.clearOnFocus or j.ClearOnFocus or false,
-callback=j.callback or j.Callback or function()end},ae)k.value=tostring(j.value or j.Value or j.currentValue or j.
-CurrentValue or'')k.flag=j.flag or j.Flag or(not k.forgetState and ah.deriveFlagFromName(k.name)or nil)k.window:
-_registerControl(k)k.main=k.window:Create('Frame',{Size=UDim2.new(1,-20,0,41),BorderSizePixel=0,Name=k.name,
+aa,ab,ac=a(12)local ad return(function(...)local ae={}ae.__index=ae ae.__type='Group'local af,ag,ah,ai,aj,b=ac(ab.Parent
+.Parent.utility.moveable),ac(ab.Parent.Parent.utility.log),ac(ab.Parent.Parent.utility.ordering),8,4,{button=true,toggle
+=true,stat=true,slider=true}function ae.new(c,d)d=if typeof(d)=='table'then d else{}local e=string.lower(d.direction or
+d.Direction or'row')local f=e=='column'or e=='vertical'local g=not f local h=if g then Enum.FillDirection.Horizontal
+else Enum.FillDirection.Vertical local i,j=setmetatable({tab=assert(c,'Missing argument #1 (Tab expected)'),window=c.
+window,direction=h,compact=g,forgetState=c.forgetState,elements={}},ae),c.direction==Enum.FillDirection.Horizontal i.
+main=i.window:Create('Frame',{Name='Group',BackgroundTransparency=1,BorderSizePixel=0,AutomaticSize=Enum.AutomaticSize.Y
+,Size=if g then UDim2.new(1,-20,0,0)else UDim2.new(1,0,0,0),Parent=i.tab.tabPage})if j then i.main.Size=UDim2.new(0,0,0,
+0)i.window:Create('UIFlexItem',{FlexMode=Enum.UIFlexMode.Fill,Parent=i.main})end i.tabPage=i.main i.layout=i.window:
+Create('UIListLayout',{FillDirection=h,SortOrder=Enum.SortOrder.LayoutOrder,Padding=UDim.new(0,if f then aj else ai),
+VerticalAlignment=if g then Enum.VerticalAlignment.Center else Enum.VerticalAlignment.Top,HorizontalAlignment=if g then
+Enum.HorizontalAlignment.Left else Enum.HorizontalAlignment.Center,Parent=i.main})return i end function ae._add(c,d,e)if
+c.compact and not b[d]then ag.warn(`Rayfield: a row only holds compact elements (button/toggle/stat/slider), ignoring '{
+d}'. Use a column for it.`)return nil end local f=ac(ab.Parent[d]).new(c,e)table.insert(c.elements,f)ah(f,#c.elements*10
+)c.window:_restoreLate(f)if c.compact then c:_wrapChild(f)end c:_reflowRow()if not c.window.hidden then f:_setShown(true
+,true)end return f end function ae._reflowRow(c)if c.direction~=Enum.FillDirection.Horizontal then return end local d=#c
+.elements>0 for e,f in c.elements do if f.__type~='Group'then d=false break end end c.layout.Padding=if d then UDim.new(
+0,-10)else UDim.new(0,ai)end function ae._wrapChild(c,d)c.layout.Wraps=true c.layout.HorizontalFlex=Enum.UIFlexAlignment
+.Fill d._widthManaged=true local e=if d._minWidth then d:_minWidth()else 0 if e>0 then d.main.AutomaticSize=Enum.
+AutomaticSize.None d.main.Size=UDim2.new(0,e,d.main.Size.Y.Scale,d.main.Size.Y.Offset)end end function ae.CreateButton(c
+,d)return c:_add('button',d)end function ae.CreateToggle(c,d)return c:_add('toggle',d)end function ae.CreateSwitch(c,d)
+return c:_add('toggle',d)end function ae.CreateStat(c,d)return c:_add('stat',d)end function ae.CreateSlider(c,d)return c
+:_add('slider',d)end function ae.CreateDropdown(c,d)return c:_add('dropdown',d)end function ae.CreateSection(c,d)return
+c:_add('section',d)end function ae.CreateText(c,d)return c:_add('text',d)end function ae.CreateDivider(c,d)return c:
+_add('divider',d)end function ae._addGroup(c,d)d=if typeof(d)=='table'then table.clone(d)else{}if c.direction==Enum.
+FillDirection.Horizontal then c.layout.VerticalAlignment=Enum.VerticalAlignment.Top if c.tab.direction~=Enum.
+FillDirection.Horizontal then c.main.Size=UDim2.new(1,0,0,0)end end local e=ae.new(c,d)table.insert(c.elements,e)e.main.
+LayoutOrder=#c.elements*10 c:_reflowRow()return e end function ae.CreateGroup(c,d)return c:_addGroup(d)end function ae.
+_moveElement(c,d,e)local f=table.find(c.elements,d)if not f then return end table.remove(c.elements,f)e=math.clamp(e,1,#
+c.elements+1)table.insert(c.elements,e,d)for g,h in c.elements do ah(h,g*10)end end function ae._setShown(c,d,e)for f,g
+in c.elements do g:_setShown(d,e)end end function ae._refreshTheme(c)for d,e in c.elements do if e._refreshTheme then e:
+_refreshTheme()end end end af(ae)return ae end)()end,[13]=function()local aa,ab,ac=a(13)local ad return(function(...)
+local ae={}ae.__index=ae ae.__type='Input'local af=ab.Parent.Parent.utility local ag,ah,ai,aj,b,c,d,e=ac(af.variables),
+ac(af.functions),ac(af.moveable),ac(af.lockable),ac(af.locale),ac(af.constants),ac(af.inlineDescription),ac(af.
+HapticEngine)local f,g=c.pillResizeInfo,TweenInfo.new(0.15,Enum.EasingStyle.Quint,Enum.EasingDirection.Out)
+local function h(i)local j,k=i:match'^([%d%.%-]+)%^([%d%.%-]+)$'if j and k then local l,m=tonumber(j),tonumber(k)if l
+and m then return l^m end end return tonumber(i)end function ae.new(i,j)j=if typeof(j)=='table'then j else{}local k=
+setmetatable({tab=assert(i,'Missing argument #1 (Tab expected)'),window=i.window,name=j.name or j.Name or'Input',icon=j.
+icon or j.Icon,description=j.description or j.Description,forgetState=j.forgetState or j.ForgetState or i.forgetState,
+placeholder=j.placeholder or j.Placeholder or'',numeric=j.numeric or j.Numeric or false,clearOnFocus=j.clearOnFocus or j
+.ClearOnFocus or false,callback=j.callback or j.Callback or function()end},ae)k.value=tostring(j.value or j.Value or j.
+currentValue or j.CurrentValue or'')k.flag=j.flag or j.Flag or(not k.forgetState and ah.deriveFlagFromName(k.name)or nil
+)k.window:_registerControl(k)k.main=k.window:Create('Frame',{Size=UDim2.new(1,-20,0,41),BorderSizePixel=0,Name=k.name,
 BackgroundColor3=Color3.fromRGB(255,255,255),BackgroundTransparency=1,Parent=k.tab.tabPage},{BackgroundTransparency=
 'ElementTransparency'})k.stroke=k.window:StyleElementBody(k.main)k.hoverOverlay=k.window:CreateHoverOverlay(k.main)k.
 container=k.window:Create('Frame',{Size=UDim2.new(0,170,0,16),Position=UDim2.new(0,20,0.5,0),AnchorPoint=Vector2.new(0,
@@ -1093,7 +1093,7 @@ aj.open(i)end end function aj.railWidth(i,j)if i.searchPill then i.searchPill.Si
 function aj.build(i)i._searching=false i.searchPage=i:Create('ScrollingFrame',{Name='Search',Size=UDim2.new(1,-20,1,0),
 Position=UDim2.new(0.5,0,0,68),AnchorPoint=Vector2.new(0.5,0.5),BorderSizePixel=0,BackgroundTransparency=1,
 AutomaticCanvasSize=Enum.AutomaticSize.Y,CanvasSize=UDim2.new(0,0,0,0),ScrollBarThickness=0,ScrollingDirection=Enum.
-ScrollingDirection.Y,LayoutOrder=2000,Parent=i.elements})i:Create('UIListLayout',{Padding=UDim.new(0,7),FillDirection=
+ScrollingDirection.Y,LayoutOrder=2000,Parent=i.elements})i:Create('UIListLayout',{Padding=UDim.new(0,4),FillDirection=
 Enum.FillDirection.Vertical,VerticalAlignment=Enum.VerticalAlignment.Top,HorizontalAlignment=Enum.HorizontalAlignment.
 Center,SortOrder=Enum.SortOrder.LayoutOrder,Parent=i.searchPage})i:Create('UIPadding',{PaddingTop=UDim.new(0,if i.layout
 .mode=='sidebar'then 53 else 10),PaddingBottom=UDim.new(0,33),Parent=i.searchPage})i.searchEmpty=i:Create('TextLabel',{
@@ -1118,7 +1118,7 @@ function()aj.toggle(i)end})i.searchAction.isLit=function()return i._searching en
 )local aa,ab,ac=a(19)local ad return(function(...)local ae={}ae.__index=ae ae.__type='Section'local af,ag=ac(ab.Parent.
 Parent.utility.moveable),ac(ab.Parent.Parent.utility.locale)function ae.new(ah,ai)ai=if typeof(ai)=='table'then ai else{
 }local aj=setmetatable({tab=assert(ah,'Missing argument #1 (Tab expected)'),window=ah.window,name=ai.name or ai.Name or
-'Section',icon=ai.icon or ai.Icon},ae)local ak=if#aj.tab.elements==0 then 0 else 13 aj.main=aj.window:Create('Frame',{
+'Section',icon=ai.icon or ai.Icon},ae)local ak=if#aj.tab.elements==0 then 0 else 6 aj.main=aj.window:Create('Frame',{
 Size=UDim2.new(1,-40,0,20+ak),BorderSizePixel=0,Name=aj.name,BackgroundTransparency=1,Parent=aj.tab.tabPage})if ak>0
 then aj.window:Create('UIPadding',{PaddingTop=UDim.new(0,ak),Parent=aj.main})end aj.window:Create('UIListLayout',{
 FillDirection=Enum.FillDirection.Horizontal,Padding=UDim.new(0,6),SortOrder=Enum.SortOrder.LayoutOrder,VerticalAlignment
@@ -1396,7 +1396,7 @@ e.neglectSelector then ak.build(e,e.window.layout)end e.tabPage=e.window:Create(
 .new(1,-20,1,0),Position=UDim2.new(0.5,0,0,68),AnchorPoint=Vector2.new(0.5,0.5),BorderSizePixel=0,BackgroundTransparency
 =1,AutomaticCanvasSize=Enum.AutomaticSize.Y,CanvasSize=UDim2.new(0,0,0,0),ScrollBarThickness=0,ScrollingDirection=Enum.
 ScrollingDirection.Y,LayoutOrder=e.customOrder or 0,Parent=e.window.elements})e.tabPageLayout=e.window:Create(
-'UIListLayout',{Padding=UDim.new(0,7),FillDirection=Enum.FillDirection.Vertical,VerticalAlignment=Enum.VerticalAlignment
+'UIListLayout',{Padding=UDim.new(0,4),FillDirection=Enum.FillDirection.Vertical,VerticalAlignment=Enum.VerticalAlignment
 .Top,HorizontalAlignment=Enum.HorizontalAlignment.Center,SortOrder=Enum.SortOrder.LayoutOrder,Parent=e.tabPage})e.window
 :Create('UIPadding',{PaddingTop=UDim.new(0,10),PaddingBottom=UDim.new(0,33),Parent=e.tabPage})if not e.neglectSelector
 then table.insert(e.connections,e.window:Connect(e.topbarItemInteract.MouseButton1Click,function()ai.click()e:Select()
@@ -1435,7 +1435,7 @@ selectedTab=nil for f,g in ipairs(d.tabs)do if not g.neglectSelector then g:Sele
 for f,g in c.connections do d:Disconnect(g)end c.connections={}if c.topbarItem then d:DestroySubtree(c.topbarItem)end if
 c.tabPage then d:DestroySubtree(c.tabPage)end c.topbarItem=nil c.tabPage=nil c.elements={}end return ae end)()end,[24]=
 function()local aa,ab,ac=a(24)local ad return(function(...)local ae={}ae.__index=ae ae.__type='TabSection'local af,ag,ah
-,ai,aj=ac(ab.Parent.Parent.utility.locale),ac(ab.Parent.Parent.utility.log),20,6,3 local function ak(al)for am,b in al.
+,ai,aj=ac(ab.Parent.Parent.utility.locale),ac(ab.Parent.Parent.utility.log),20,3,2 local function ak(al)for am,b in al.
 tabs do if not b.neglectSelector then return true end end return#al.tabSections>0 end function ae.new(al,am)am=if
 typeof(am)=='table'then am else{}local b=setmetatable({window=assert(al,'Missing argument #1 (Window expected)'),name=am
 .name or am.Name or'Section',icon=am.icon or am.Icon},ae)if al.layout.mode~='sidebar'then if not al._warnedTabSection
@@ -1651,25 +1651,31 @@ matchesKey(g.keybind,h)then g:Set(not g.value)end end)if g.keybind~=Enum.KeyCode
 true)then g.keybind=Enum.KeyCode.Unknown if g._keybindControl then g._keybindControl.value=g.keybind end end return g
 end function ae._startRecording(e)local f=e.window._recordingKeybind if f and f~=e and type(f._stopRecording)==
 'function'then f:_stopRecording()end e.recording=true e.window._recordingKeybind=e if e.title then e.title.Text='...'end
-end function ae._stopRecording(e)if not e.recording then return end e.recording=false if e.window._recordingKeybind==e
-then local f=e.window task.defer(function()if f._recordingKeybind==e then f._recordingKeybind=nil end end)end if e.title
-then e.title.Text=ak.resolve(e.name)end end function ae.SetKeybind(e,f,g)local h,i=d.coerceKey(f),e.recording if h~=Enum
-.KeyCode.Unknown then local j if h==e.window.settings.toggleKeybind then j='the menu toggle key'else local k=e.window:
-_keybindOwner(h,e)if k then j="'"..tostring(k.name).."'"end end if j then local k=d.keyName(h)..' is bound to '..j..
-'; kept '..d.keyName(e.keybind)c.warn('Rayfield: '..k)if i then e.window:Notify{title=ak.resolve'Keybind unavailable',
-content=k..'.'}end e:_stopRecording()return false end end e.keybind=h if e._keybindControl then e._keybindControl.value=
-h end if e.recording then e:_stopRecording()end if not g and e._keybindControl then e.window:_persist(e._keybindControl)
-end return true end function ae.GetKeybind(e)return e.keybind end function ae._buildSwitch(e,f)local g=e.window e.
-functionContainer=g:Create('Frame',{BorderSizePixel=0,Size=UDim2.fromOffset(50,21),BackgroundTransparency=1,Parent=f},{
-BackgroundColor3='ToggleTrack'})g:Create('UICorner',{CornerRadius=UDim.new(0,15),Parent=e.functionContainer})e.
-containerStroke=g:Create('UIStroke',{Transparency=1,Parent=e.functionContainer},{Color='SurfaceStroke'})e.indicator=g:
-Create('Frame',{BorderSizePixel=0,Size=UDim2.fromOffset(25,17),Position=e.value and UDim2.new(1,-28,0.5,0)or UDim2.new(1
-,-47,0.5,0),AnchorPoint=Vector2.new(0,0.5),BackgroundColor3=e.value and e.window.theme.AccentColor or e.window.theme.
-ToggleKnobOff,BackgroundTransparency=1,Parent=e.functionContainer})g:Create('UICorner',{CornerRadius=UDim.new(1,0),
-Parent=e.indicator})e.indicatorStroke=g:Create('UIStroke',{Color=e.value and e.window.theme.AccentStroke or Color3.
-fromRGB(255,255,255),Transparency=1,Parent=e.indicator})e.indicatorGlow=g:CreateGlow(e.indicator,'AccentColor',20,1)e.
-overlay=g:Create('Frame',{BorderSizePixel=0,Size=UDim2.fromScale(1,1),Position=UDim2.fromScale(0,0),AnchorPoint=Vector2.
-new(0,0),BackgroundColor3=Color3.fromRGB(255,255,255),BackgroundTransparency=1,Parent=e.functionContainer},{Visible=
+e._keybindPopup=e.window:Popup{title='Set Keybind',content=
+[[Press any key to bind it to this toggle.
+Backspace clears the keybind.
+Escape cancels.
+Left-click still toggles normally.]]
+,options={{text='Got it'}}}end function ae._stopRecording(e)if not e.recording then return end e.recording=false if e.
+_keybindPopup then e._keybindPopup:Close()e._keybindPopup=nil end if e.window._recordingKeybind==e then local f=e.window
+task.defer(function()if f._recordingKeybind==e then f._recordingKeybind=nil end end)end if e.title then e.title.Text=ak.
+resolve(e.name)end end function ae.SetKeybind(e,f,g)local h,i=d.coerceKey(f),e.recording if h~=Enum.KeyCode.Unknown then
+local j if h==e.window.settings.toggleKeybind then j='the menu toggle key'else local k=e.window:_keybindOwner(h,e)if k
+then j="'"..tostring(k.name).."'"end end if j then local k=d.keyName(h)..' is bound to '..j..'; kept '..d.keyName(e.
+keybind)c.warn('Rayfield: '..k)if i then e.window:Notify{title=ak.resolve'Keybind unavailable',content=k..'.'}end e:
+_stopRecording()return false end end e.keybind=h if e._keybindControl then e._keybindControl.value=h end if e.recording
+then e:_stopRecording()end if not g and e._keybindControl then e.window:_persist(e._keybindControl)end return true end
+function ae.GetKeybind(e)return e.keybind end function ae._buildSwitch(e,f)local g=e.window e.functionContainer=g:
+Create('Frame',{BorderSizePixel=0,Size=UDim2.fromOffset(50,21),BackgroundTransparency=1,Parent=f},{BackgroundColor3=
+'ToggleTrack'})g:Create('UICorner',{CornerRadius=UDim.new(0,15),Parent=e.functionContainer})e.containerStroke=g:Create(
+'UIStroke',{Transparency=1,Parent=e.functionContainer},{Color='SurfaceStroke'})e.indicator=g:Create('Frame',{
+BorderSizePixel=0,Size=UDim2.fromOffset(25,17),Position=e.value and UDim2.new(1,-28,0.5,0)or UDim2.new(1,-47,0.5,0),
+AnchorPoint=Vector2.new(0,0.5),BackgroundColor3=e.value and e.window.theme.AccentColor or e.window.theme.ToggleKnobOff,
+BackgroundTransparency=1,Parent=e.functionContainer})g:Create('UICorner',{CornerRadius=UDim.new(1,0),Parent=e.indicator}
+)e.indicatorStroke=g:Create('UIStroke',{Color=e.value and e.window.theme.AccentStroke or Color3.fromRGB(255,255,255),
+Transparency=1,Parent=e.indicator})e.indicatorGlow=g:CreateGlow(e.indicator,'AccentColor',20,1)e.overlay=g:Create(
+'Frame',{BorderSizePixel=0,Size=UDim2.fromScale(1,1),Position=UDim2.fromScale(0,0),AnchorPoint=Vector2.new(0,0),
+BackgroundColor3=Color3.fromRGB(255,255,255),BackgroundTransparency=1,Parent=e.functionContainer},{Visible=
 'DarkToggleOverlay'})g:Create('UICorner',{CornerRadius=UDim.new(0,15),Parent=e.overlay})e.overlayGradient=g:Create(
 'UIGradient',{Rotation=90,Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(30,30,30)),
 ColorSequenceKeypoint.new(1,Color3.fromRGB(30,30,30))},Transparency=NumberSequence.new{NumberSequenceKeypoint.new(0,1),
@@ -2932,30 +2938,30 @@ floor(math.min(e,d/(am.minAspectRatio::number)))d=math.floor(math.min(d,e*am.max
 Vector2?,c:ae.Mode?):UDim2 local d=af.profile(c)if not b or b.X<ag or b.Y<ag then return UDim2.fromOffset(d.defaultSize.
 X,d.defaultSize.Y)end if b.X<900 or b.Y<600 then d=am(d)end local e,f=math.min(b.X*d.maxOccupancyX,b.X-d.marginFloorX),
 ai(d,b.Y)if d.minAspectRatio then return al(d,e,f)end return ak(d,e,f)end return af end)()end},{{1,2,{'Rayfield'},{{31,1
-,{'themes'},{{33,2,{'cobalt'}},{34,2,{'default'}},{32,2,{'amethyst'}},{37,2,{'rose'}},{35,2,{'ember'}},{36,2,{'frost'}}}
-},{38,2,{'types'}},{39,1,{'utility'},{{48,2,{'fontManager'}},{66,2,{'persistenceSettings'}},{64,2,{'persistenceConfig'}}
-,{56,2,{'lockable'}},{41,2,{'assetResolver'}},{63,2,{'persistence'}},{40,2,{'HapticEngine'}},{45,2,{'filesystem'}},{60,2
-,{'odometer'}},{67,2,{'persistenceWrite'}},{69,2,{'services'}},{51,2,{'image'}},{58,2,{'moveable'}},{59,2,{'network'}},{
-73,2,{'windowSizing'}},{49,2,{'functions'}},{47,2,{'flagNames'}},{71,2,{'textMetrics'}},{46,2,{'filesystemManager'}},{68
-,2,{'runtime'}},{62,2,{'path'}},{70,2,{'sia'}},{72,2,{'variables'}},{42,2,{'colors'}},{44,2,{'enums'}},{50,2,{
-'heartbeat'}},{65,2,{'persistencePaths'}},{43,2,{'constants'}},{54,2,{'layouts'}},{55,2,{'locale'}},{61,2,{'ordering'}},
-{53,2,{'inlineDescription'}},{57,2,{'log'}},{52,2,{'imageCache'}}}},{2,1,{'components'},{{30,2,{'window'}},{27,2,{'text'
-}},{22,2,{'stat'}},{17,2,{'progress'}},{14,2,{'keybind'}},{3,2,{'action'}},{4,2,{'button'}},{8,2,{'descriptor'}},{19,2,{
-'section'}},{28,2,{'toast'}},{26,2,{'tag'}},{5,2,{'chrome'}},{25,2,{'tabSelector'}},{23,2,{'tab'}},{15,2,{'notification'
-}},{24,2,{'tabSection'}},{10,2,{'drag'}},{9,2,{'divider'}},{21,2,{'slider'}},{20,2,{'sidebar'}},{11,2,{'dropdown'}},{18,
-2,{'search'}},{13,2,{'input'}},{16,2,{'popup'}},{29,2,{'toggle'}},{6,2,{'colorpicker'}},{12,2,{'group'}},{7,2,{'console'
-}}}}}}},'0.4.1','Rayfield',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,pcall,xpcall,
-tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)return j end,al.wrap,ae.sub,
-ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then af=r end end local q=af and
-af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]='ModuleScript',[3]='Script',[4]=
-'LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function(A)local B,C=A.Name,A.Parent
-while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B={}for C in ai,z[A]do j(B,C)
-end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E in ai,C:GetDescendants()do j(
-B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]for E in ai,D do if E.Name==B
-then return E end end if C then for E in ai,D do return E:FindFirstChild(B,true)end end end},FindFirstAncestor={{
-'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end C=C.Parent end end},WaitForChild={{
-'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,G=D[1],D[2],{}for H,I in
-ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
+,{'themes'},{{36,2,{'frost'}},{32,2,{'amethyst'}},{34,2,{'default'}},{37,2,{'rose'}},{33,2,{'cobalt'}},{35,2,{'ember'}}}
+},{39,1,{'utility'},{{55,2,{'locale'}},{60,2,{'odometer'}},{68,2,{'runtime'}},{42,2,{'colors'}},{50,2,{'heartbeat'}},{46
+,2,{'filesystemManager'}},{53,2,{'inlineDescription'}},{58,2,{'moveable'}},{59,2,{'network'}},{44,2,{'enums'}},{57,2,{
+'log'}},{54,2,{'layouts'}},{45,2,{'filesystem'}},{66,2,{'persistenceSettings'}},{62,2,{'path'}},{51,2,{'image'}},{49,2,{
+'functions'}},{47,2,{'flagNames'}},{61,2,{'ordering'}},{63,2,{'persistence'}},{40,2,{'HapticEngine'}},{64,2,{
+'persistenceConfig'}},{69,2,{'services'}},{48,2,{'fontManager'}},{67,2,{'persistenceWrite'}},{56,2,{'lockable'}},{71,2,{
+'textMetrics'}},{72,2,{'variables'}},{52,2,{'imageCache'}},{73,2,{'windowSizing'}},{43,2,{'constants'}},{70,2,{'sia'}},{
+41,2,{'assetResolver'}},{65,2,{'persistencePaths'}}}},{2,1,{'components'},{{21,2,{'slider'}},{23,2,{'tab'}},{29,2,{
+'toggle'}},{10,2,{'drag'}},{26,2,{'tag'}},{15,2,{'notification'}},{28,2,{'toast'}},{17,2,{'progress'}},{12,2,{'group'}},
+{7,2,{'console'}},{27,2,{'text'}},{5,2,{'chrome'}},{14,2,{'keybind'}},{24,2,{'tabSection'}},{22,2,{'stat'}},{20,2,{
+'sidebar'}},{4,2,{'button'}},{18,2,{'search'}},{8,2,{'descriptor'}},{19,2,{'section'}},{9,2,{'divider'}},{30,2,{'window'
+}},{16,2,{'popup'}},{25,2,{'tabSelector'}},{3,2,{'action'}},{6,2,{'colorpicker'}},{13,2,{'input'}},{11,2,{'dropdown'}}}}
+,{38,2,{'types'}}}}},'0.4.1','Rayfield',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,
+pcall,xpcall,tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)return j end,al.
+wrap,ae.sub,ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then af=r end end
+local q=af and af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]='ModuleScript',[3]=
+'Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function(A)local B,C=A.Name
+,A.Parent while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B={}for C in ai,z[A]
+do j(B,C)end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E in ai,C:
+GetDescendants()do j(B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]for E in
+ai,D do if E.Name==B then return E end end if C then for E in ai,D do return E:FindFirstChild(B,true)end end end},
+FindFirstAncestor={{'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end C=C.Parent end end
+},WaitForChild={{'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,G=D[1],
+D[2],{}for H,I in ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
 "Expected ':' not '.' calling member function "..C,2)end local I={...}for J,K in ai,G do local L=I[J]local M,N,O=b(L),K[
 1],K[2]if L==nil and not O then ah('Argument '..L..' missing or nil',3)end if N~='any'and M~=N and not(M=='nil'and O)
 then ah('Argument '..J..' expects type "'..N..'", got "'..M..'"',2)end end return F(H,...)end end local function C(D,E,F

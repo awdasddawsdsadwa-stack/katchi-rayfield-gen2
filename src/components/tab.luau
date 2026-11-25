@@ -101,7 +101,9 @@ function Tab.new(window, properties)
     })
 
     self.tabPageLayout = self.window:Create("UIListLayout", {
-        Padding = UDim.new(0, 7),
+        -- vertical gap between consecutive elements. Kept tight so more of the page fits
+        -- on screen; element box heights and the page's own insets are untouched.
+        Padding = UDim.new(0, 4),
         FillDirection = Enum.FillDirection.Vertical,
         VerticalAlignment = Enum.VerticalAlignment.Top,
         HorizontalAlignment = Enum.HorizontalAlignment.Center,

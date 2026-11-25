@@ -24,7 +24,8 @@ function Section.new(tab, properties)
 
     -- first element in a tab shouldn't get extra space above it, only sections that
     -- follow something. this section isn't registered yet so an empty list means first.
-    local topSpace = if #self.tab.elements == 0 then 0 else 13
+    -- a modest gap is enough to read as a new group; the heading's own 20px stay intact.
+    local topSpace = if #self.tab.elements == 0 then 0 else 6
 
     self.main = self.window:Create("Frame", {
         Size = UDim2.new(1, -40, 0, 20 + topSpace),

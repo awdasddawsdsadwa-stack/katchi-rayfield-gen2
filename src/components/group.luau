@@ -26,6 +26,10 @@ local assignOrder = require(script.Parent.Parent.utility.ordering)
 
 local elementPadding = 8
 
+-- Columns stack vertically and get the same tighter gap as the tab page. Rows keep the
+-- original 8px: that padding is horizontal there, and narrowing it would shrink controls.
+local verticalPadding = 4
+
 -- these render fine side by side in a row: the compact builds (button/toggle/stat) and
 -- the slider (it reflows to its narrow layout). dropdown/section/text/divider stay full-only.
 local compactCapable = {
@@ -82,7 +86,7 @@ function Group.new(tab, properties)
     self.layout = self.window:Create("UIListLayout", {
         FillDirection = direction,
         SortOrder = Enum.SortOrder.LayoutOrder,
-        Padding = UDim.new(0, elementPadding),
+        Padding = UDim.new(0, if vertical then verticalPadding else elementPadding),
         VerticalAlignment = if horizontal then Enum.VerticalAlignment.Center else Enum.VerticalAlignment.Top,
         HorizontalAlignment = if horizontal then Enum.HorizontalAlignment.Left else Enum.HorizontalAlignment.Center,
 

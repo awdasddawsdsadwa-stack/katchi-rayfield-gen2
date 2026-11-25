@@ -49,12 +49,12 @@ function Descriptor.new(tab, properties)
         Parent = self.main,
     }, { TextColor3 = "ContentColor", FontFace = "Font" })
 
-    -- Bottom spacing
+    -- Bottom spacing: a small breather before the next element, not a full extra row
     self.window:Create("Frame", {
         BackgroundTransparency = 1,
         BorderSizePixel = 0,
         LayoutOrder = 1,
-        Size = UDim2.fromOffset(0, 15),
+        Size = UDim2.fromOffset(0, 8),
         Parent = self.main,
     })
 

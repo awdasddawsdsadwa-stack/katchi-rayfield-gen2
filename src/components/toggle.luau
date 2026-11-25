@@ -160,6 +160,11 @@ end
 -- Minimal feedback: the title reads "..." until a key lands (or Escape cancels). Sharing
 -- window._recordingKeybind with keybind.luau means the window's menu key and every other
 -- keybind/toggle stay quiet during the capture, and Hide() cancels us through the same hook.
+-- The popup explains the controls but is deliberately non-modal for input: the global
+-- InputBegan listener above keeps capturing keys while it is open, and every way out of
+-- recording (bind, Backspace, Escape, another capture, Hide) funnels through _stopRecording,
+-- which dismisses the card with it. Its "Got it" button only acknowledges - it doesn't end
+-- recording, so the next key still binds.
 function Toggle:_startRecording()
     local current = self.window._recordingKeybind
     if current and current ~= self and type(current._stopRecording) == "function" then
@@ -170,6 +175,14 @@ function Toggle:_startRecording()
     if self.title then
         self.title.Text = "..."
     end
+    self._keybindPopup = self.window:Popup({
+        title = "Set Keybind",
+        content = "Press any key to bind it to this toggle.\n"
+            .. "Backspace clears the keybind.\n"
+            .. "Escape cancels.\n"
+            .. "Left-click still toggles normally.",
+        options = { { text = "Got it" } },
+    })
 end
 
 function Toggle:_stopRecording()
@@ -177,6 +190,10 @@ function Toggle:_stopRecording()
         return
     end
     self.recording = false
+    if self._keybindPopup then
+        self._keybindPopup:Close()
+        self._keybindPopup = nil
+    end
     -- defer like Keybind does: the key that ends recording is still being dispatched and
     -- the window/other elements must keep seeing the flag until that dispatch finishes.
     if self.window._recordingKeybind == self then

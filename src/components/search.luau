@@ -250,7 +250,8 @@ function search.build(window)
     })
 
     window:Create("UIListLayout", {
-        Padding = UDim.new(0, 7),
+        -- match the tab page's inter-element gap so results stay equally dense
+        Padding = UDim.new(0, 4),
         FillDirection = Enum.FillDirection.Vertical,
         VerticalAlignment = Enum.VerticalAlignment.Top,
         HorizontalAlignment = Enum.HorizontalAlignment.Center,
