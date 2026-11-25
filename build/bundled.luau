@@ -1651,31 +1651,31 @@ matchesKey(g.keybind,h)then g:Set(not g.value)end end)if g.keybind~=Enum.KeyCode
 true)then g.keybind=Enum.KeyCode.Unknown if g._keybindControl then g._keybindControl.value=g.keybind end end return g
 end function ae._startRecording(e)local f=e.window._recordingKeybind if f and f~=e and type(f._stopRecording)==
 'function'then f:_stopRecording()end e.recording=true e.window._recordingKeybind=e if e.title then e.title.Text='...'end
-e._keybindPopup=e.window:Popup{title='Set Keybind',content=
+task.defer(function()if not e.recording then return end e._keybindPopup=e.window:Popup{title='Set Keybind',content=
 [[Press any key to bind it to this toggle.
 Backspace clears the keybind.
 Escape cancels.
 Left-click still toggles normally.]]
-,options={{text='Got it'}}}end function ae._stopRecording(e)if not e.recording then return end e.recording=false if e.
-_keybindPopup then e._keybindPopup:Close()e._keybindPopup=nil end if e.window._recordingKeybind==e then local f=e.window
-task.defer(function()if f._recordingKeybind==e then f._recordingKeybind=nil end end)end if e.title then e.title.Text=ak.
-resolve(e.name)end end function ae.SetKeybind(e,f,g)local h,i=d.coerceKey(f),e.recording if h~=Enum.KeyCode.Unknown then
-local j if h==e.window.settings.toggleKeybind then j='the menu toggle key'else local k=e.window:_keybindOwner(h,e)if k
-then j="'"..tostring(k.name).."'"end end if j then local k=d.keyName(h)..' is bound to '..j..'; kept '..d.keyName(e.
-keybind)c.warn('Rayfield: '..k)if i then e.window:Notify{title=ak.resolve'Keybind unavailable',content=k..'.'}end e:
-_stopRecording()return false end end e.keybind=h if e._keybindControl then e._keybindControl.value=h end if e.recording
-then e:_stopRecording()end if not g and e._keybindControl then e.window:_persist(e._keybindControl)end return true end
-function ae.GetKeybind(e)return e.keybind end function ae._buildSwitch(e,f)local g=e.window e.functionContainer=g:
-Create('Frame',{BorderSizePixel=0,Size=UDim2.fromOffset(50,21),BackgroundTransparency=1,Parent=f},{BackgroundColor3=
-'ToggleTrack'})g:Create('UICorner',{CornerRadius=UDim.new(0,15),Parent=e.functionContainer})e.containerStroke=g:Create(
-'UIStroke',{Transparency=1,Parent=e.functionContainer},{Color='SurfaceStroke'})e.indicator=g:Create('Frame',{
-BorderSizePixel=0,Size=UDim2.fromOffset(25,17),Position=e.value and UDim2.new(1,-28,0.5,0)or UDim2.new(1,-47,0.5,0),
-AnchorPoint=Vector2.new(0,0.5),BackgroundColor3=e.value and e.window.theme.AccentColor or e.window.theme.ToggleKnobOff,
-BackgroundTransparency=1,Parent=e.functionContainer})g:Create('UICorner',{CornerRadius=UDim.new(1,0),Parent=e.indicator}
-)e.indicatorStroke=g:Create('UIStroke',{Color=e.value and e.window.theme.AccentStroke or Color3.fromRGB(255,255,255),
-Transparency=1,Parent=e.indicator})e.indicatorGlow=g:CreateGlow(e.indicator,'AccentColor',20,1)e.overlay=g:Create(
-'Frame',{BorderSizePixel=0,Size=UDim2.fromScale(1,1),Position=UDim2.fromScale(0,0),AnchorPoint=Vector2.new(0,0),
-BackgroundColor3=Color3.fromRGB(255,255,255),BackgroundTransparency=1,Parent=e.functionContainer},{Visible=
+,options={{text='Got it'}}}end)end function ae._stopRecording(e)if not e.recording then return end e.recording=false if
+e._keybindPopup then e._keybindPopup:Close()e._keybindPopup=nil end if e.window._recordingKeybind==e then local f=e.
+window task.defer(function()if f._recordingKeybind==e then f._recordingKeybind=nil end end)end if e.title then e.title.
+Text=ak.resolve(e.name)end end function ae.SetKeybind(e,f,g)local h,i=d.coerceKey(f),e.recording if h~=Enum.KeyCode.
+Unknown then local j if h==e.window.settings.toggleKeybind then j='the menu toggle key'else local k=e.window:
+_keybindOwner(h,e)if k then j="'"..tostring(k.name).."'"end end if j then local k=d.keyName(h)..' is bound to '..j..
+'; kept '..d.keyName(e.keybind)c.warn('Rayfield: '..k)if i then e.window:Notify{title=ak.resolve'Keybind unavailable',
+content=k..'.'}end e:_stopRecording()return false end end e.keybind=h if e._keybindControl then e._keybindControl.value=
+h end if e.recording then e:_stopRecording()end if not g and e._keybindControl then e.window:_persist(e._keybindControl)
+end return true end function ae.GetKeybind(e)return e.keybind end function ae._buildSwitch(e,f)local g=e.window e.
+functionContainer=g:Create('Frame',{BorderSizePixel=0,Size=UDim2.fromOffset(50,21),BackgroundTransparency=1,Parent=f},{
+BackgroundColor3='ToggleTrack'})g:Create('UICorner',{CornerRadius=UDim.new(0,15),Parent=e.functionContainer})e.
+containerStroke=g:Create('UIStroke',{Transparency=1,Parent=e.functionContainer},{Color='SurfaceStroke'})e.indicator=g:
+Create('Frame',{BorderSizePixel=0,Size=UDim2.fromOffset(25,17),Position=e.value and UDim2.new(1,-28,0.5,0)or UDim2.new(1
+,-47,0.5,0),AnchorPoint=Vector2.new(0,0.5),BackgroundColor3=e.value and e.window.theme.AccentColor or e.window.theme.
+ToggleKnobOff,BackgroundTransparency=1,Parent=e.functionContainer})g:Create('UICorner',{CornerRadius=UDim.new(1,0),
+Parent=e.indicator})e.indicatorStroke=g:Create('UIStroke',{Color=e.value and e.window.theme.AccentStroke or Color3.
+fromRGB(255,255,255),Transparency=1,Parent=e.indicator})e.indicatorGlow=g:CreateGlow(e.indicator,'AccentColor',20,1)e.
+overlay=g:Create('Frame',{BorderSizePixel=0,Size=UDim2.fromScale(1,1),Position=UDim2.fromScale(0,0),AnchorPoint=Vector2.
+new(0,0),BackgroundColor3=Color3.fromRGB(255,255,255),BackgroundTransparency=1,Parent=e.functionContainer},{Visible=
 'DarkToggleOverlay'})g:Create('UICorner',{CornerRadius=UDim.new(0,15),Parent=e.overlay})e.overlayGradient=g:Create(
 'UIGradient',{Rotation=90,Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(30,30,30)),
 ColorSequenceKeypoint.new(1,Color3.fromRGB(30,30,30))},Transparency=NumberSequence.new{NumberSequenceKeypoint.new(0,1),
@@ -2937,31 +2937,31 @@ floor(math.min(e,d/(am.minAspectRatio::number)))d=math.floor(math.min(d,e*am.max
 400,320)c.maxOccupancyX=0.88 c.maxOccupancyY=0.72 c.marginFloorX=16 c.marginFloorY=20 return c end function af.fit(b:
 Vector2?,c:ae.Mode?):UDim2 local d=af.profile(c)if not b or b.X<ag or b.Y<ag then return UDim2.fromOffset(d.defaultSize.
 X,d.defaultSize.Y)end if b.X<900 or b.Y<600 then d=am(d)end local e,f=math.min(b.X*d.maxOccupancyX,b.X-d.marginFloorX),
-ai(d,b.Y)if d.minAspectRatio then return al(d,e,f)end return ak(d,e,f)end return af end)()end},{{1,2,{'Rayfield'},{{31,1
-,{'themes'},{{36,2,{'frost'}},{32,2,{'amethyst'}},{34,2,{'default'}},{37,2,{'rose'}},{33,2,{'cobalt'}},{35,2,{'ember'}}}
-},{39,1,{'utility'},{{55,2,{'locale'}},{60,2,{'odometer'}},{68,2,{'runtime'}},{42,2,{'colors'}},{50,2,{'heartbeat'}},{46
-,2,{'filesystemManager'}},{53,2,{'inlineDescription'}},{58,2,{'moveable'}},{59,2,{'network'}},{44,2,{'enums'}},{57,2,{
-'log'}},{54,2,{'layouts'}},{45,2,{'filesystem'}},{66,2,{'persistenceSettings'}},{62,2,{'path'}},{51,2,{'image'}},{49,2,{
-'functions'}},{47,2,{'flagNames'}},{61,2,{'ordering'}},{63,2,{'persistence'}},{40,2,{'HapticEngine'}},{64,2,{
-'persistenceConfig'}},{69,2,{'services'}},{48,2,{'fontManager'}},{67,2,{'persistenceWrite'}},{56,2,{'lockable'}},{71,2,{
-'textMetrics'}},{72,2,{'variables'}},{52,2,{'imageCache'}},{73,2,{'windowSizing'}},{43,2,{'constants'}},{70,2,{'sia'}},{
-41,2,{'assetResolver'}},{65,2,{'persistencePaths'}}}},{2,1,{'components'},{{21,2,{'slider'}},{23,2,{'tab'}},{29,2,{
-'toggle'}},{10,2,{'drag'}},{26,2,{'tag'}},{15,2,{'notification'}},{28,2,{'toast'}},{17,2,{'progress'}},{12,2,{'group'}},
-{7,2,{'console'}},{27,2,{'text'}},{5,2,{'chrome'}},{14,2,{'keybind'}},{24,2,{'tabSection'}},{22,2,{'stat'}},{20,2,{
-'sidebar'}},{4,2,{'button'}},{18,2,{'search'}},{8,2,{'descriptor'}},{19,2,{'section'}},{9,2,{'divider'}},{30,2,{'window'
-}},{16,2,{'popup'}},{25,2,{'tabSelector'}},{3,2,{'action'}},{6,2,{'colorpicker'}},{13,2,{'input'}},{11,2,{'dropdown'}}}}
-,{38,2,{'types'}}}}},'0.4.1','Rayfield',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,
-pcall,xpcall,tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)return j end,al.
-wrap,ae.sub,ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then af=r end end
-local q=af and af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]='ModuleScript',[3]=
-'Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function(A)local B,C=A.Name
-,A.Parent while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B={}for C in ai,z[A]
-do j(B,C)end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E in ai,C:
-GetDescendants()do j(B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]for E in
-ai,D do if E.Name==B then return E end end if C then for E in ai,D do return E:FindFirstChild(B,true)end end end},
-FindFirstAncestor={{'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end C=C.Parent end end
-},WaitForChild={{'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,G=D[1],
-D[2],{}for H,I in ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
+ai(d,b.Y)if d.minAspectRatio then return al(d,e,f)end return ak(d,e,f)end return af end)()end},{{1,2,{'Rayfield'},{{2,1,
+{'components'},{{14,2,{'keybind'}},{6,2,{'colorpicker'}},{7,2,{'console'}},{30,2,{'window'}},{25,2,{'tabSelector'}},{22,
+2,{'stat'}},{29,2,{'toggle'}},{17,2,{'progress'}},{9,2,{'divider'}},{27,2,{'text'}},{28,2,{'toast'}},{26,2,{'tag'}},{5,2
+,{'chrome'}},{10,2,{'drag'}},{12,2,{'group'}},{23,2,{'tab'}},{24,2,{'tabSection'}},{4,2,{'button'}},{3,2,{'action'}},{19
+,2,{'section'}},{13,2,{'input'}},{21,2,{'slider'}},{18,2,{'search'}},{11,2,{'dropdown'}},{16,2,{'popup'}},{20,2,{
+'sidebar'}},{15,2,{'notification'}},{8,2,{'descriptor'}}}},{39,1,{'utility'},{{59,2,{'network'}},{41,2,{'assetResolver'}
+},{61,2,{'ordering'}},{44,2,{'enums'}},{54,2,{'layouts'}},{70,2,{'sia'}},{55,2,{'locale'}},{73,2,{'windowSizing'}},{56,2
+,{'lockable'}},{57,2,{'log'}},{48,2,{'fontManager'}},{69,2,{'services'}},{67,2,{'persistenceWrite'}},{42,2,{'colors'}},{
+64,2,{'persistenceConfig'}},{68,2,{'runtime'}},{43,2,{'constants'}},{53,2,{'inlineDescription'}},{72,2,{'variables'}},{
+40,2,{'HapticEngine'}},{49,2,{'functions'}},{62,2,{'path'}},{71,2,{'textMetrics'}},{65,2,{'persistencePaths'}},{52,2,{
+'imageCache'}},{66,2,{'persistenceSettings'}},{63,2,{'persistence'}},{47,2,{'flagNames'}},{46,2,{'filesystemManager'}},{
+58,2,{'moveable'}},{45,2,{'filesystem'}},{60,2,{'odometer'}},{50,2,{'heartbeat'}},{51,2,{'image'}}}},{38,2,{'types'}},{
+31,1,{'themes'},{{34,2,{'default'}},{36,2,{'frost'}},{35,2,{'ember'}},{32,2,{'amethyst'}},{37,2,{'rose'}},{33,2,{
+'cobalt'}}}}}}},'0.4.1','Rayfield',string,task,setmetatable,error,next,table,unpack,coroutine,script,type,require,pcall,
+xpcall,tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)return j end,al.wrap,
+ae.sub,ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then af=r end end local q=
+af and af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]='ModuleScript',[3]='Script',[
+4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function(A)local B,C=A.Name,A.Parent
+while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B={}for C in ai,z[A]do j(B,C)
+end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E in ai,C:GetDescendants()do j(
+B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]for E in ai,D do if E.Name==B
+then return E end end if C then for E in ai,D do return E:FindFirstChild(B,true)end end end},FindFirstAncestor={{
+'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end C=C.Parent end end},WaitForChild={{
+'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,G=D[1],D[2],{}for H,I in
+ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
 "Expected ':' not '.' calling member function "..C,2)end local I={...}for J,K in ai,G do local L=I[J]local M,N,O=b(L),K[
 1],K[2]if L==nil and not O then ah('Argument '..L..' missing or nil',3)end if N~='any'and M~=N and not(M=='nil'and O)
 then ah('Argument '..J..' expects type "'..N..'", got "'..M..'"',2)end end return F(H,...)end end local function C(D,E,F

@@ -175,14 +175,21 @@ function Toggle:_startRecording()
     if self.title then
         self.title.Text = "..."
     end
-    self._keybindPopup = self.window:Popup({
-        title = "Set Keybind",
-        content = "Press any key to bind it to this toggle.\n"
-            .. "Backspace clears the keybind.\n"
-            .. "Escape cancels.\n"
-            .. "Left-click still toggles normally.",
-        options = { { text = "Got it" } },
-    })
+    -- Defer past the right-click that opened recording: a modal popup created in
+    -- the same input dispatch can be dismissed by that click reaching its backdrop.
+    task.defer(function()
+        if not self.recording then
+            return
+        end
+        self._keybindPopup = self.window:Popup({
+            title = "Set Keybind",
+            content = "Press any key to bind it to this toggle.\n"
+                .. "Backspace clears the keybind.\n"
+                .. "Escape cancels.\n"
+                .. "Left-click still toggles normally.",
+            options = { { text = "Got it" } },
+        })
+    end)
 end
 
 function Toggle:_stopRecording()
